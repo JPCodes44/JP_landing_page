@@ -20,9 +20,10 @@ fi
 TASK_SLUG="$1"
 BRANCH="agent/${TASK_SLUG}"
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-REPO_NAME="$(basename "$REPO_ROOT")"
-WORKTREE_PATH="${REPO_ROOT}/../${REPO_NAME}-${TASK_SLUG}"
-SPEC_PATH="${REPO_ROOT}/.agents/specs/active/${TASK_SLUG}.md"
+WORKTREE_PATH="${REPO_ROOT}/../wt-${TASK_SLUG}"
+DATE_PREFIX="$(date +%Y-%m-%d)"
+SPEC_FILENAME="${DATE_PREFIX}-${TASK_SLUG}.md"
+SPEC_PATH="${REPO_ROOT}/.agents/specs/active/${SPEC_FILENAME}"
 TEMPLATE_PATH="${REPO_ROOT}/.agents/specs/TEMPLATE.md"
 
 echo -e "${BOLD}Creating agent worktree for: $TASK_SLUG${NC}"
@@ -34,9 +35,9 @@ if [[ ! "$TASK_SLUG" =~ ^[a-z0-9-]+$ ]]; then
   exit 1
 fi
 
-# Check spec doesn't already exist
-if [[ -f "$SPEC_PATH" ]]; then
-  echo -e "${RED}Error: Spec already exists at $SPEC_PATH. Delete it first if starting fresh.${NC}"
+# Check spec doesn't already exist (any date prefix for this slug)
+if ls "${REPO_ROOT}/.agents/specs/active/"*"-${TASK_SLUG}.md" 2>/dev/null | grep -q .; then
+  echo -e "${RED}Error: A spec for '${TASK_SLUG}' already exists in specs/active/. Delete it first if starting fresh.${NC}"
   exit 1
 fi
 
@@ -56,16 +57,21 @@ fi
 echo -e "${YELLOW}Creating spec at $SPEC_PATH...${NC}"
 cp "$TEMPLATE_PATH" "$SPEC_PATH"
 
-# Pre-fill BRANCH and WORKTREE fields
+# Pre-fill header, Branch, and Worktree fields
+sed -i "s|# Spec: <task-id>|# Spec: ${TASK_SLUG}|" "$SPEC_PATH"
 sed -i "s|^agent/$|${BRANCH}|" "$SPEC_PATH"
-sed -i "s|^\.\./JP_landing_page-$|${WORKTREE_PATH}|" "$SPEC_PATH"
+sed -i "s|^\.\./wt-$|../wt-${TASK_SLUG}|" "$SPEC_PATH"
 
-echo -e "${GREEN}Spec created. Fill in TASK, APPROVED_FILES, and ACCEPTANCE_CRITERIA before starting work.${NC}"
+echo -e "${GREEN}Spec created. Fill in Objective, Why, Allowed Files, and Acceptance Criteria before starting work.${NC}"
 echo ""
 
-# Create worktree + branch
+# Fetch so the worktree branches from current origin/main, not local HEAD
+echo -e "${YELLOW}Fetching origin...${NC}"
+git fetch origin
+
+# Create worktree + branch rooted at origin/main
 echo -e "${YELLOW}Creating git worktree at $WORKTREE_PATH on branch $BRANCH...${NC}"
-git worktree add "$WORKTREE_PATH" -b "$BRANCH"
+git worktree add -b "$BRANCH" "$WORKTREE_PATH" origin/main
 
 # Configure hooks path in the worktree
 echo -e "${YELLOW}Configuring hooks in worktree...${NC}"

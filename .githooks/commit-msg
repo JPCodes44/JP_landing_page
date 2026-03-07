@@ -1,38 +1,9 @@
 #!/usr/bin/env bash
-# commit-msg hook
-# Validates commit message quality.
-
 set -euo pipefail
+msg_file="$1"
 
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-NC='\033[0m'
-
-MSG_FILE="$1"
-MSG=$(cat "$MSG_FILE")
-
-# Strip comments and leading/trailing whitespace
-CLEAN_MSG=$(echo "$MSG" | grep -v '^#' | sed '/^[[:space:]]*$/d' | head -1 | xargs)
-
-if [[ -z "$CLEAN_MSG" ]]; then
-  echo -e "${RED}[commit-msg] FAIL: Commit message is empty.${NC}"
+if ! grep -Eq '^\[spec:[^]]+\] ' "$msg_file"; then
+  echo "commit message must start with [spec:<task-id>]"
+  echo "example: [spec:auth-login-fix] tighten invalid credential flow"
   exit 1
 fi
-
-if [[ ${#CLEAN_MSG} -lt 10 ]]; then
-  echo -e "${RED}[commit-msg] FAIL: Commit message too short (${#CLEAN_MSG} chars, min 10): '$CLEAN_MSG'${NC}"
-  exit 1
-fi
-
-# Block generic single-word messages
-GENERIC=(wip fix update changes cleanup refactor misc todo temp hack)
-LOWER_MSG=$(echo "$CLEAN_MSG" | tr '[:upper:]' '[:lower:]')
-for word in "${GENERIC[@]}"; do
-  if [[ "$LOWER_MSG" == "$word" ]]; then
-    echo -e "${RED}[commit-msg] FAIL: Generic commit message '$CLEAN_MSG' is not descriptive enough.${NC}"
-    exit 1
-  fi
-done
-
-echo -e "${GREEN}[commit-msg] PASS: '$CLEAN_MSG'${NC}"
-exit 0

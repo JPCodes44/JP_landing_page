@@ -1,11 +1,26 @@
 #!/usr/bin/env bash
-# pre-commit hook
-# Runs secret scan, spec validation, and file scope check on staged changes.
+set -euo pipefail
 
-set -uo pipefail
+current_branch="$(git symbolic-ref --short HEAD 2>/dev/null || echo "")"
 
-REPO_ROOT="$(git rev-parse --show-toplevel)"
-SCRIPT_DIR="${REPO_ROOT}/scripts"
+# Agent spec enforcement only applies on agent/* branches
+if [[ "${current_branch}" == agent/* ]]; then
+  spec_file="${AGENT_SPEC:-}"
 
-echo "[pre-commit] Running quality gates on staged changes..."
-exec bash "${SCRIPT_DIR}/run_quality_gates.sh" --staged
+  if [ -z "${spec_file}" ]; then
+    echo "AGENT_SPEC is not set. Export it before committing:"
+    echo "  export AGENT_SPEC=.agents/specs/active/<date>-<task-slug>.md"
+    exit 1
+  fi
+
+  if [ ! -f "${spec_file}" ]; then
+    echo "AGENT_SPEC points to a file that does not exist: ${spec_file}"
+    exit 1
+  fi
+
+  python3 scripts/verify_spec_header.py "${spec_file}"
+  python3 scripts/changed_files_against_spec.py "${spec_file}"
+fi
+
+bash scripts/verify_no_secrets.sh
+bash scripts/run_quality_gates.sh

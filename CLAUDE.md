@@ -4,16 +4,25 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-A landing page for providing agentic services to SMBs. The project is in early stages — no framework or tooling has been chosen yet.
+A landing page for providing agentic services to SMBs. The project is in early stages — framework not yet chosen.
+
+## Package Manager
+
+This project uses **Bun**. Never use npm, yarn, or pnpm.
+
+```bash
+bun install        # install dependencies
+bun run dev        # dev server
+bun run build      # production build
+bun test           # run all tests
+bun test <file>    # run a single test file
+bun run lint       # lint
+bun run typecheck  # typecheck
+```
 
 ## Getting Started
 
-When the stack is chosen, update this file with:
-- How to install dependencies
-- How to run the dev server
-- How to build for production
-- How to run tests (including a single test)
-- Any lint/format commands
+When the framework is chosen, update this file with the specific dev server, build, and test commands.
 
 ## Workflow Orchestration
 

@@ -1,31 +1,66 @@
-# Agent Spec Template
+# Spec: <task-id>
 
-Copy this file to `.agents/specs/active/<task-slug>.md` and fill in every field before starting work.
+Copy this file to `.agents/specs/active/<YYYY-MM-DD>-<task-id>.md` and fill in every field before starting work. A spec with any blank required field is invalid. The agent must not start without a valid spec.
 
 ---
 
-## TASK
-<!-- One-line description of what this agent will do. Be specific. -->
+## Objective
+<!-- One sentence. Exact outcome. No vague language. -->
 
 
-## BRANCH
-<!-- Must follow pattern: agent/<task-slug> -->
+## Why
+<!-- Why this change is needed. What breaks or is missing without it. -->
+
+
+## Branch
+<!-- Must follow pattern: agent/<task-id> -->
 agent/
 
-## WORKTREE
-<!-- Absolute or repo-relative path to the worktree directory -->
-../JP_landing_page-
+## Worktree
+<!-- Path to the worktree directory -->
+../wt-
 
-## APPROVED_FILES
-<!-- Exhaustive list of files this agent is permitted to create or modify.
-     Globs are allowed (e.g., src/components/*.tsx).
-     Any file touched outside this list is a gate violation. -->
+## Allowed files
+<!-- Exhaustive list. Globs permitted. Any file touched outside this list is a gate violation. -->
 -
 
-## ACCEPTANCE_CRITERIA
-<!-- Checklist. Each item must be verifiable. The reviewer will check these. -->
+## Forbidden files
+<!-- Files the agent must never touch regardless of what the task seems to require. -->
+- package-lock.json
+- .github/workflows/*
+- infra/*
+
+## Constraints
+<!-- Non-negotiable rules for the implementation. -->
+- No new dependencies unless explicitly approved
+- Preserve all public APIs
+- Must not break existing tests
+
+## Implementation Notes
+<!-- Specific guidance on how to approach the task. Not a place to restate the objective. -->
+-
+
+## Acceptance Criteria
+<!-- Each item must be independently verifiable. Reviewer will check every one. -->
 - [ ]
 - [ ]
 
-## NOTES
-<!-- Optional. Caveats, dependencies, research references, open questions. -->
+## Required Checks
+<!-- Commands that must pass before the PR is opened. -->
+- bun run lint
+- bun run typecheck
+- bun test
+
+## Rollback Plan
+<!-- What to do if this causes a regression after merge. -->
+Revert branch if regression appears in <describe affected area>.
+
+## Reviewer Checklist
+<!-- The reviewer works through this list. All items must pass before approval. -->
+- [ ] All changed files are in Allowed Files
+- [ ] No files from Forbidden Files were touched
+- [ ] No new dependencies introduced
+- [ ] No dead abstractions added
+- [ ] No mocks added where real behavior can be tested
+- [ ] All Acceptance Criteria are demonstrably met
+- [ ] Required Checks pass in CI

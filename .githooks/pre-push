@@ -1,31 +1,6 @@
 #!/usr/bin/env bash
-# pre-push hook
-# Blocks direct push to main from agent/* branches.
-# Runs full gate suite before any push.
-
-set -uo pipefail
-
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-NC='\033[0m'
-
-REPO_ROOT="$(git rev-parse --show-toplevel)"
-SCRIPT_DIR="${REPO_ROOT}/scripts"
-
-CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-REMOTE="$1"
-REMOTE_URL="$2"
-
-while read -r local_ref local_sha remote_ref remote_sha; do
-  # Block agent/* branches from pushing directly to main/master
-  if [[ "$CURRENT_BRANCH" == agent/* ]]; then
-    if [[ "$remote_ref" == refs/heads/main || "$remote_ref" == refs/heads/master ]]; then
-      echo -e "${RED}[pre-push] FAIL: Cannot push agent branch '$CURRENT_BRANCH' directly to main.${NC}"
-      echo -e "${RED}           Open a pull request instead.${NC}"
-      exit 1
-    fi
-  fi
-done
-
-echo "[pre-push] Running full gate suite before push..."
-bash "${SCRIPT_DIR}/run_quality_gates.sh" --pr
+branch="$(git rev-parse --abbrev-ref HEAD)"
+if [[ "$branch" == agent/* ]]; then
+  echo "git push blocked on agent branches. Open a pull request instead."
+  exit 1
+fi

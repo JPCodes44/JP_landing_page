@@ -1,0 +1,25 @@
+services:
+  backend:
+    image: oven/bun:1
+    working_dir: /app
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    command: sh -c "bun install && bun run --cwd packages/backend dev"
+    depends_on: []
+
+  frontend:
+    image: oven/bun:1
+    working_dir: /app
+    volumes:
+      - .:/app
+    ports:
+      - "5173:5173"
+    env_file:
+      - .env
+    command: sh -c "bun install && bun run --cwd packages/frontend dev"
+    depends_on:
+      - backend
