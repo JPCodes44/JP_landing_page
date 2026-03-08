@@ -1,0 +1,18 @@
+{
+  "enabledPlugins": {
+    "frontend-design@claude-plugins-official": true
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash /home/jp/JP_landing_page/scripts/pre_tool_use_scan.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
