@@ -32,7 +32,6 @@ else
 fi
 
 echo "2/4 typecheck"
-bun run --cwd packages/common build
 if bun run typecheck; then
   TYPECHECK_STATUS="passed"
 else
