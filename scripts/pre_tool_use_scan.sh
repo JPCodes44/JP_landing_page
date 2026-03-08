@@ -5,8 +5,8 @@
 # On agent/* branches only: scans relevant source directories for similar
 # existing exports and warns the agent before it writes duplicate code.
 #
-# Always exits 0 (warn-only, never hard-blocks).
-# Stdout is surfaced to the main agent as inline context.
+# Hard-blocks if no read receipt exists for the task (exit 1).
+# Warns (exit 0) if similar existing code is detected.
 
 set -euo pipefail
 
@@ -14,6 +14,22 @@ set -euo pipefail
 BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null || echo "")
 if [[ "$BRANCH" != agent/* ]]; then
   exit 0
+fi
+
+# ─── Read receipt check (hard block) ─────────────────────────────────────────
+TASK_ID="${BRANCH#agent/}"
+REPO_ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo "")
+if [[ -n "$REPO_ROOT" && ! -f "${REPO_ROOT}/.agents/logs/reads/${TASK_ID}.json" ]]; then
+  echo ""
+  echo "[TASK START REQUIRED] No read receipt found for task '${TASK_ID}'."
+  echo "  Run this before making any changes:"
+  echo ""
+  echo "    bash scripts/begin_task.sh ${TASK_ID}"
+  echo ""
+  echo "  This reads the spec and context-retrieval-policy, classifies the task,"
+  echo "  plans your file reads, and writes a receipt that unlocks this gate."
+  echo ""
+  exit 1
 fi
 
 # ─── Parse tool input from stdin ──────────────────────────────────────────────
