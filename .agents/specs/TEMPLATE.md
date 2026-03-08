@@ -36,6 +36,15 @@ agent/
 - Preserve all public APIs
 - Must not break existing tests
 
+## Domain Policy
+<!-- Which domain policy applies. Remove inapplicable lines. -->
+- `.agents/policies/global-policy.md` (always)
+- `.agents/policies/frontend-policy.md` (if touching packages/frontend/)
+
+## Read Before Starting
+<!-- Files the agent must read before writing any code. -->
+-
+
 ## Implementation Notes
 <!-- Specific guidance on how to approach the task. Not a place to restate the objective. -->
 -
