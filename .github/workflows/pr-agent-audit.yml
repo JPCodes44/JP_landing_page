@@ -6,6 +6,36 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
+  block-risky-changes:
+    name: Block Risky File Changes
+    if: startsWith(github.head_ref, 'agent/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: block risky file changes
+        run: |
+          CHANGED="$(git diff --name-only origin/${{ github.base_ref }}...HEAD)"
+          echo "$CHANGED"
+          ! echo "$CHANGED" | grep -qE '^(\.github/workflows/|infra/|docker/|\.env|secrets/)'
+
+  pr-title:
+    name: Enforce PR Title Format
+    if: startsWith(github.head_ref, 'agent/')
+    runs-on: ubuntu-latest
+    steps:
+      - name: check title matches [agent][<task-id>] summary
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          if ! echo "$PR_TITLE" | grep -qE '^\[agent\]\[[^]]+\] .+'; then
+            echo "PR title must match: [agent][<task-id>] summary"
+            echo "Got: $PR_TITLE"
+            exit 1
+          fi
+
   agent-audit:
     name: Agent PR Audit
     if: startsWith(github.head_ref, 'agent/')
@@ -41,7 +71,7 @@ jobs:
         id: files_audit
         run: |
           set +e
-          OUTPUT=$(python3 scripts/changed_files_against_spec.py "${{ github.head_ref }}" 2>&1)
+          OUTPUT=$(python3 scripts/changed_files_against_spec.py "${{ steps.spec.outputs.spec_path }}" 2>&1)
           EXIT_CODE=$?
           echo "output<<EOF" >> "$GITHUB_OUTPUT"
           echo "$OUTPUT" >> "$GITHUB_OUTPUT"

@@ -77,11 +77,18 @@ git worktree add -b "$BRANCH" "$WORKTREE_PATH" origin/main
 echo -e "${YELLOW}Configuring hooks in worktree...${NC}"
 git -C "$WORKTREE_PATH" config core.hooksPath "${REPO_ROOT}/.githooks"
 
+# Write start-time marker for traceability log
+mkdir -p "${REPO_ROOT}/.agents/logs/runs"
+date -u '+%Y-%m-%dT%H:%M:%SZ' > "${REPO_ROOT}/.agents/logs/runs/${TASK_SLUG}.start"
+echo -e "${YELLOW}Start time recorded for run log.${NC}"
+
 echo ""
 echo -e "${GREEN}${BOLD}Done! Worktree ready.${NC}"
 echo ""
 echo "Next steps:"
 echo "  1. Edit the spec:  ${SPEC_PATH}"
-echo "  2. Change to worktree:  cd ${WORKTREE_PATH}"
+echo "  2. Change to worktree and export spec:"
+echo "       cd ${WORKTREE_PATH}"
+echo "       export AGENT_SPEC=.agents/specs/active/${SPEC_FILENAME}"
 echo "  3. Implement, then gate:  bash scripts/run_quality_gates.sh"
 echo "  4. Open a PR from $BRANCH to main"
