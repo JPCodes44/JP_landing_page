@@ -7,7 +7,7 @@ LINT_STATUS="skipped"
 TYPECHECK_STATUS="skipped"
 TESTS_STATUS="skipped"
 BUILD_STATUS="skipped"
-echo "0/4 shellcheck"
+echo "1/5 shellcheck"
 if ! command -v shellcheck &>/dev/null; then
   echo "shellcheck: NOT INSTALLED — run: sudo pacman -S shellcheck"
   exit 1
@@ -22,7 +22,7 @@ if ! shellcheck --external-sources --severity=warning "${SHELL_FILES[@]}"; then
   exit 1
 fi
 
-echo "1/4 lint"
+echo "2/5 lint"
 if bun run lint; then
   LINT_STATUS="passed"
 else
@@ -31,7 +31,7 @@ else
   exit 1
 fi
 
-echo "2/4 typecheck"
+echo "3/5 typecheck"
 if bun run typecheck; then
   TYPECHECK_STATUS="passed"
 else
@@ -40,7 +40,7 @@ else
   exit 1
 fi
 
-echo "3/4 test"
+echo "4/5 test"
 if bun run test; then
   TESTS_STATUS="passed"
 else
@@ -49,7 +49,7 @@ else
   exit 1
 fi
 
-echo "4/4 build"
+echo "5/5 build"
 if bun run build; then
   BUILD_STATUS="passed"
 else
