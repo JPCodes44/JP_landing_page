@@ -5,12 +5,13 @@
 # Called by run_quality_gates.sh and by agents directly on exit.
 #
 # Options:
-#   --lint      passed|failed|skipped
-#   --typecheck passed|failed|skipped
-#   --tests     passed|failed|skipped
-#   --build     passed|failed|skipped
-#   --summary   "what happened"
-#   --status    passed|failed
+#   --shellcheck passed|failed|skipped
+#   --lint       passed|failed|skipped
+#   --typecheck  passed|failed|skipped
+#   --tests      passed|failed|skipped
+#   --build      passed|failed|skipped
+#   --summary    "what happened"
+#   --status     passed|failed
 #
 # Write constraint: only writes to .agents/logs/runs/. Hard stop otherwise.
 
@@ -19,7 +20,7 @@ set -euo pipefail
 RUNS_DIR=".agents/logs/runs"
 
 if [[ $# -lt 1 ]]; then
-  echo "Usage: emit_run_log.sh <task-id> [--lint passed] [--typecheck passed] [--tests passed] [--build passed] [--summary '...'] [--status passed|failed]"
+  echo "Usage: emit_run_log.sh <task-id> [--shellcheck passed] [--lint passed] [--typecheck passed] [--tests passed] [--build passed] [--summary '...'] [--status passed|failed]"
   exit 2
 fi
 
@@ -27,6 +28,7 @@ TASK_ID="$1"
 shift
 
 # ─── Parse flags ──────────────────────────────────────────────────────────────
+SHELLCHECK="skipped"
 LINT="skipped"
 TYPECHECK="skipped"
 TESTS="skipped"
@@ -36,10 +38,11 @@ STATUS="unknown"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --lint)      LINT="$2";      shift 2 ;;
-    --typecheck) TYPECHECK="$2"; shift 2 ;;
-    --tests)     TESTS="$2";     shift 2 ;;
-    --build)     BUILD="$2";     shift 2 ;;
+    --shellcheck) SHELLCHECK="$2"; shift 2 ;;
+    --lint)       LINT="$2";       shift 2 ;;
+    --typecheck)  TYPECHECK="$2";  shift 2 ;;
+    --tests)      TESTS="$2";      shift 2 ;;
+    --build)      BUILD="$2";      shift 2 ;;
     --summary)   SUMMARY="$2";   shift 2 ;;
     --status)    STATUS="$2";    shift 2 ;;
     *) echo "Unknown flag: $1"; exit 2 ;;
@@ -88,6 +91,7 @@ RUN_LOG_SPEC="$SPEC" \
 RUN_LOG_START="$START_TIME" \
 RUN_LOG_END="$END_TIME" \
 RUN_LOG_STATUS="$STATUS" \
+RUN_LOG_SHELLCHECK="$SHELLCHECK" \
 RUN_LOG_LINT="$LINT" \
 RUN_LOG_TYPECHECK="$TYPECHECK" \
 RUN_LOG_TESTS="$TESTS" \
@@ -119,12 +123,14 @@ record = {
     "status":       env("RUN_LOG_STATUS"),
     "changed_files": changed_files,
     "commands_run": [
+        "shellcheck scripts/*.sh .githooks/*",
         "bun run lint",
         "bun run typecheck",
-        "bun test",
+        "bun run test",
         "bun run build",
     ],
     "checks": {
+        "shellcheck": env("RUN_LOG_SHELLCHECK"),
         "lint":       env("RUN_LOG_LINT"),
         "typecheck":  env("RUN_LOG_TYPECHECK"),
         "tests":      env("RUN_LOG_TESTS"),

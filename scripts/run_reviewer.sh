@@ -75,13 +75,14 @@ if status == "failed":
     lines.append("> **WARNING: Gates FAILED on last recorded run. Fix before opening a PR.**")
     lines.append("")
 lines += [
-    "| Gate       | Result |",
-    "|------------|--------|",
-    f"| lint       | {icon(checks.get('lint', 'unknown'))} |",
-    f"| typecheck  | {icon(checks.get('typecheck', 'unknown'))} |",
-    f"| tests      | {icon(checks.get('tests', 'unknown'))} |",
-    f"| build      | {icon(checks.get('build', 'unknown'))} |",
-    f"| overall    | {icon(status)} |",
+    "| Gate        | Result |",
+    "|-------------|--------|",
+    f"| shellcheck  | {icon(checks.get('shellcheck', 'unknown'))} |",
+    f"| lint        | {icon(checks.get('lint', 'unknown'))} |",
+    f"| typecheck   | {icon(checks.get('typecheck', 'unknown'))} |",
+    f"| tests       | {icon(checks.get('tests', 'unknown'))} |",
+    f"| build       | {icon(checks.get('build', 'unknown'))} |",
+    f"| overall     | {icon(status)} |",
     "",
 ]
 if summary:

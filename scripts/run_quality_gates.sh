@@ -3,6 +3,7 @@ set -euo pipefail
 
 echo "running quality gates..."
 
+SHELLCHECK_STATUS="skipped"
 LINT_STATUS="skipped"
 TYPECHECK_STATUS="skipped"
 TESTS_STATUS="skipped"
@@ -18,9 +19,11 @@ while IFS= read -r -d '' f; do
 done < <(find scripts .githooks -maxdepth 1 -type f -name "*.sh" -print0 2>/dev/null; \
          find .githooks -maxdepth 1 -type f ! -name "*.*" -print0 2>/dev/null)
 if ! shellcheck --external-sources --severity=warning "${SHELL_FILES[@]}"; then
+  SHELLCHECK_STATUS="failed"
   echo "shellcheck: FAILED"
   exit 1
 fi
+SHELLCHECK_STATUS="passed"
 
 echo "2/5 lint"
 if bun run lint; then
@@ -67,12 +70,13 @@ if [[ "$BRANCH" == agent/* ]]; then
   TASK_ID="${BRANCH#agent/}"
   echo ""
   bash scripts/emit_run_log.sh "${TASK_ID}" \
-    --lint      "${LINT_STATUS}" \
-    --typecheck "${TYPECHECK_STATUS}" \
-    --tests     "${TESTS_STATUS}" \
-    --build     "${BUILD_STATUS}" \
-    --status    "passed" \
-    --summary   "Quality gates passed on ${BRANCH}"
+    --shellcheck "${SHELLCHECK_STATUS}" \
+    --lint       "${LINT_STATUS}" \
+    --typecheck  "${TYPECHECK_STATUS}" \
+    --tests      "${TESTS_STATUS}" \
+    --build      "${BUILD_STATUS}" \
+    --status     "passed" \
+    --summary    "Quality gates passed on ${BRANCH}"
 
   echo ""
   echo "next: open your PR"
