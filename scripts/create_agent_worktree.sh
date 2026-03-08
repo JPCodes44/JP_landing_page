@@ -36,7 +36,7 @@ if [[ ! "$TASK_SLUG" =~ ^[a-z0-9-]+$ ]]; then
 fi
 
 # Check spec doesn't already exist (any date prefix for this slug)
-if ls "${REPO_ROOT}/.agents/specs/active/"*"-${TASK_SLUG}.md" 2>/dev/null | grep -q .; then
+if find "${REPO_ROOT}/.agents/specs/active" -maxdepth 1 -name "*-${TASK_SLUG}.md" 2>/dev/null | grep -q .; then
   echo -e "${RED}Error: A spec for '${TASK_SLUG}' already exists in specs/active/. Delete it first if starting fresh.${NC}"
   exit 1
 fi

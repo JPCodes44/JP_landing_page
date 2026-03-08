@@ -22,7 +22,7 @@ if [[ "$BRANCH" != agent/* ]]; then
 fi
 
 TASK_SLUG="${BRANCH#agent/}"
-SPEC_FILE=$(ls ".agents/specs/active/"*"-${TASK_SLUG}.md" 2>/dev/null | head -1 || true)
+SPEC_FILE=$(find ".agents/specs/active" -maxdepth 1 -name "*-${TASK_SLUG}.md" 2>/dev/null | head -1 || true)
 
 if [[ -z "$SPEC_FILE" || ! -f "$SPEC_FILE" ]]; then
   echo -e "${RED}[files] FAIL: No spec found in .agents/specs/active/ for task '${TASK_SLUG}'.${NC}"

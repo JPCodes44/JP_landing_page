@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# .githooks/post-commit
+#
+# Triggered automatically after every commit on agent/* branches.
+# Runs the reviewer script so the developer sees issues before opening a PR.
+#
+# NON-BLOCKING: post-commit hooks cannot abort a commit. This hook always
+# exits 0. The reviewer's exit code is shown as informational output only.
+
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+BOLD='\033[1m'
+NC='\033[0m'
+
+BRANCH="$(git symbolic-ref --short HEAD 2>/dev/null || echo "")"
+
+if [[ "${BRANCH}" != agent/* ]]; then
+  exit 0
+fi
+
+TASK_ID="${BRANCH#agent/}"
+
+echo ""
+echo -e "${BOLD}[post-commit] Running reviewer for: ${TASK_ID}${NC}"
+echo ""
+
+set +e
+bash scripts/run_reviewer.sh "${TASK_ID}"
+REVIEWER_EXIT=$?
+set -e
+
+echo ""
+if [[ $REVIEWER_EXIT -eq 0 ]]; then
+  echo -e "${GREEN}[post-commit] Reviewer passed. Report: .agents/logs/reviews/${TASK_ID}.md${NC}"
+else
+  echo -e "${RED}[post-commit] Reviewer found issues — fix before opening a PR.${NC}"
+  echo -e "${RED}Report: .agents/logs/reviews/${TASK_ID}.md${NC}"
+fi
+echo ""
+
+exit 0

@@ -56,7 +56,7 @@ WORKTREE=$(git worktree list --porcelain \
 [[ -z "$WORKTREE" ]] && WORKTREE="unknown"
 
 # Spec — prefer date-prefixed
-SPEC=$(ls ".agents/specs/active/"*"-${TASK_ID}.md" 2>/dev/null | head -1 || true)
+SPEC=$(find ".agents/specs/active" -maxdepth 1 -name "*-${TASK_ID}.md" 2>/dev/null | head -1 || true)
 [[ -z "$SPEC" && -f ".agents/specs/active/${TASK_ID}.md" ]] && SPEC=".agents/specs/active/${TASK_ID}.md"
 [[ -z "$SPEC" ]] && SPEC="not found"
 

@@ -28,7 +28,7 @@ SUMMARY="$1"
 PR_TITLE="[agent][${TASK_ID}] ${SUMMARY}"
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-SPEC_PATH=$(ls "${REPO_ROOT}/.agents/specs/active/"*"-${TASK_ID}.md" 2>/dev/null | head -1 || true)
+SPEC_PATH=$(find "${REPO_ROOT}/.agents/specs/active" -maxdepth 1 -name "*-${TASK_ID}.md" 2>/dev/null | head -1 || true)
 
 if [[ -z "$SPEC_PATH" ]]; then
   echo -e "${RED}Error: no spec found for task '${TASK_ID}' in .agents/specs/active/${NC}"

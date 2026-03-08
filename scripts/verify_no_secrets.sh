@@ -32,6 +32,14 @@ get_files() {
   fi
 }
 
+SENSITIVE_NAMES=(
+  '(^|/)\.env(\.|$)'        # .env, .env.local, .env.production, etc.
+  '\.(pem|key|p12|pfx|jks)$'  # private key / cert files
+  '(^|/)(id_rsa|id_ecdsa|id_ed25519|id_dsa)$'  # SSH private keys
+  '(^|/)credentials(\.json)?$'  # credentials files
+  '(^|/)\.aws/(credentials|config)$'  # AWS credential files
+)
+
 FAILURES=0
 FILES=$(get_files "$@")
 
@@ -42,6 +50,17 @@ fi
 
 while IFS= read -r file; do
   [[ -f "$file" ]] || continue
+
+  # Block sensitive filenames outright
+  for name_pattern in "${SENSITIVE_NAMES[@]}"; do
+    if echo "$file" | grep -qE "$name_pattern"; then
+      echo -e "${RED}[secrets] FAIL: Sensitive file staged: $file${NC}"
+      FAILURES=$((FAILURES + 1))
+      break
+    fi
+  done
+
+  # Scan contents for secret patterns
   for pattern in "${PATTERNS[@]}"; do
     if grep -qEi "$pattern" "$file" 2>/dev/null; then
       echo -e "${RED}[secrets] FAIL: Possible secret in $file (pattern: $pattern)${NC}"

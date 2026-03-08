@@ -7,6 +7,20 @@ LINT_STATUS="skipped"
 TYPECHECK_STATUS="skipped"
 TESTS_STATUS="skipped"
 BUILD_STATUS="skipped"
+echo "0/4 shellcheck"
+if ! command -v shellcheck &>/dev/null; then
+  echo "shellcheck: NOT INSTALLED — run: sudo pacman -S shellcheck"
+  exit 1
+fi
+SHELL_FILES=()
+while IFS= read -r -d '' f; do
+  SHELL_FILES+=("$f")
+done < <(find scripts .githooks -maxdepth 1 -type f -name "*.sh" -print0 2>/dev/null; \
+         find .githooks -maxdepth 1 -type f ! -name "*.*" -print0 2>/dev/null)
+if ! shellcheck --external-sources --severity=warning "${SHELL_FILES[@]}"; then
+  echo "shellcheck: FAILED"
+  exit 1
+fi
 
 echo "1/4 lint"
 if bun run lint; then

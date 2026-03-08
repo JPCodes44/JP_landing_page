@@ -34,7 +34,7 @@ if [[ -f ".agents/specs/active/${TASK_ID}.md" ]]; then
   SPEC_PATH=".agents/specs/active/${TASK_ID}.md"
 else
   # Look for date-prefixed spec (YYYY-MM-DD-<task-id>.md)
-  FOUND=$(ls .agents/specs/active/*-${TASK_ID}.md 2>/dev/null | head -1 || true)
+  FOUND=$(find .agents/specs/active -maxdepth 1 -name "*-${TASK_ID}.md" 2>/dev/null | head -1 || true)
   if [[ -n "$FOUND" ]]; then
     SPEC_PATH="$FOUND"
   fi
@@ -50,6 +50,66 @@ REVIEW_ICON="REVIEW REQUIRED"
 
 mechanical_failures=0
 
+# ─── Gate results (from run log) ──────────────────────────────────────────────
+RUN_LOG=".agents/logs/runs/${TASK_ID}.json"
+
+GATE_SECTION=""
+if [[ -f "${RUN_LOG}" ]]; then
+  set +e
+  export RUN_LOG_PATH="${RUN_LOG}"
+  GATE_SECTION=$(python3 - <<'PYEOF'
+import json, sys, os
+
+path = os.environ.get("RUN_LOG_PATH")
+with open(path) as f:
+    data = json.load(f)
+
+status = data.get("status", "unknown")
+checks = data.get("checks", {})
+summary = data.get("final_summary", "")
+
+icon = lambda v: "PASS" if v == "passed" else ("FAIL" if v == "failed" else v.upper())
+
+lines = ["## Gate Results (from run log)", ""]
+if status == "failed":
+    lines.append("> **WARNING: Gates FAILED on last recorded run. Fix before opening a PR.**")
+    lines.append("")
+lines += [
+    "| Gate       | Result |",
+    "|------------|--------|",
+    f"| lint       | {icon(checks.get('lint', 'unknown'))} |",
+    f"| typecheck  | {icon(checks.get('typecheck', 'unknown'))} |",
+    f"| tests      | {icon(checks.get('tests', 'unknown'))} |",
+    f"| build      | {icon(checks.get('build', 'unknown'))} |",
+    f"| overall    | {icon(status)} |",
+    "",
+]
+if summary:
+    lines += [f"Summary: {summary}", ""]
+lines.append("---")
+lines.append("")
+print("\n".join(lines))
+PYEOF
+  )
+  PY_EXIT=$?
+  set -e
+  if [[ $PY_EXIT -ne 0 ]]; then
+    GATE_SECTION="## Gate Results
+
+> Error reading run log at \`${RUN_LOG}\`.
+
+---
+"
+  fi
+else
+  GATE_SECTION="## Gate Results
+
+> No run log found. Run \`bash scripts/run_quality_gates.sh\` before opening a PR.
+
+---
+"
+fi
+
 # ─── Start report ─────────────────────────────────────────────────────────────
 cat > "${REPORT}" <<EOF
 # Review Report: ${TASK_ID}
@@ -57,6 +117,8 @@ cat > "${REPORT}" <<EOF
 Generated: $(date -u '+%Y-%m-%dT%H:%M:%SZ')
 
 ---
+
+${GATE_SECTION}
 
 ## Mechanical Checks
 
@@ -236,6 +298,35 @@ fi
   echo "${COMMIT_LINES}"
   echo ""
 } >> "${REPORT}"
+
+# ─── Check 6: Package boundary ────────────────────────────────────────────────
+{
+  echo "### 6. Package Boundary"
+  echo ""
+} >> "${REPORT}"
+
+TOUCHES_FRONTEND=0
+TOUCHES_BACKEND=0
+while IFS= read -r f; do
+  [[ -z "$f" ]] && continue
+  [[ "$f" == packages/frontend/* ]] && TOUCHES_FRONTEND=1
+  [[ "$f" == packages/backend/*  ]] && TOUCHES_BACKEND=1
+done <<< "${CHANGED_FILES}"
+
+if [[ $TOUCHES_FRONTEND -eq 1 && $TOUCHES_BACKEND -eq 1 ]]; then
+  {
+    echo "- **Result: [${REVIEW_ICON}]**"
+    echo "- Both \`packages/frontend/\` and \`packages/backend/\` are touched."
+    echo "- Confirm this cross-package change is intentional and spec-approved."
+    echo ""
+  } >> "${REPORT}"
+else
+  {
+    echo "- **Result: [${PASS_ICON}]**"
+    echo "- No simultaneous frontend+backend changes detected."
+    echo ""
+  } >> "${REPORT}"
+fi
 
 # ─── Judgment Sections ────────────────────────────────────────────────────────
 DIFF=$(git diff origin/main...HEAD 2>/dev/null || true)
