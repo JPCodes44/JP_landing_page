@@ -20,6 +20,7 @@ agent/redesign-and-animate-frame4
 - packages/frontend/src/App.tsx
 - packages/frontend/src/App.test.tsx
 - .agents/specs/active/2026-03-09-redesign-and-animate-frame4.md
+- .agents/logs/runs/redesign-and-animate-frame4.json
 
 ## Forbidden files
 - package-lock.json
