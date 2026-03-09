@@ -1,8 +1,10 @@
+import Footer from "./components/Footer";
 import Frame1 from "./components/Frame1";
 import Frame2 from "./components/Frame2";
 import Frame3 from "./components/Frame3";
 import Frame4 from "./components/Frame4";
 import Frame5 from "./components/Frame5";
+import Frame6 from "./components/Frame6";
 import {
   FONT_SIZE_LOGO,
   FONT_SIZE_NAV_LINK,
@@ -19,6 +21,7 @@ const App = () => {
     <div className="bg-bg-warm">
       <main>
         <nav
+          id="main-nav"
           className="sticky top-0 z-50 flex items-center justify-between"
           style={{
             height: NAVBAR_HEIGHT,
@@ -78,6 +81,8 @@ const App = () => {
         <Frame3 />
         <Frame4 />
         <Frame5 />
+        <Frame6 />
+        <Footer />
       </main>
     </div>
   );

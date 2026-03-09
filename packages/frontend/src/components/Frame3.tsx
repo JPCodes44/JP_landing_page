@@ -60,7 +60,10 @@ const Frame3 = () => {
         duration: 1,
       },
       0,
-    ).fromTo(label, { opacity: 0 }, { opacity: 1, ease: "none", duration: 0.2 }, 0.8);
+    )
+      .fromTo(label, { opacity: 0 }, { opacity: 1, ease: "none", duration: 0.2 }, 0.8)
+      // Linger: hold final state while user continues scrolling
+      .to({}, { duration: 2 });
 
     return () => {
       tl.scrollTrigger?.kill();

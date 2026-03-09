@@ -1,3 +1,6 @@
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useEffect, useRef } from "react";
 import bellImg from "../../styles/assets/2d/visuals/bell.png";
 import calendarImg from "../../styles/assets/2d/visuals/calendar.png";
 import sliderImg from "../../styles/assets/2d/visuals/slider.png";
@@ -9,9 +12,9 @@ import {
   FONT_SIZE_SECTION_H2,
   FRAME2_DESC_MARGIN_LEFT,
   FRAME2_GAP,
+  FRAME2_HEADING_INITIAL_OPACITY,
   FRAME2_LEFT_FLEX,
   FRAME2_RIGHT_FLEX,
-  GRID_GAP_X,
   GRID_GAP_X_WIDE,
   GRID_GAP_Y,
   ICON_SIZE,
@@ -24,6 +27,8 @@ import {
   SECTION_PADDING_X,
 } from "../theme";
 
+gsap.registerPlugin(ScrollTrigger);
+
 const icons = [
   { src: sliderImg, alt: "slider" },
   { src: temperatureImg, alt: "temperature" },
@@ -33,9 +38,95 @@ const icons = [
   { src: tasksImg, alt: "tasks" },
 ];
 
+const ICON_FROM_Y = "10rem";
+const ICON_STAGGER = 0.08;
+const ICON_DURATION = 0.6;
+const ICON_EASE = "power3.out";
+
 const Frame2 = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const paragraphRef = useRef<HTMLParagraphElement>(null);
+  const iconRefs = useRef<(HTMLImageElement | null)[]>([]);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    const heading = headingRef.current;
+    const paragraph = paragraphRef.current;
+    const iconEls = iconRefs.current.filter(Boolean) as HTMLImageElement[];
+    if (!section || !heading || !paragraph || iconEls.length === 0) return;
+
+    const prefersReducedMotion =
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (prefersReducedMotion) {
+      gsap.set(heading, { opacity: 1 });
+      gsap.set(paragraph, { opacity: 1, y: 0 });
+      for (const el of iconEls) {
+        gsap.set(el, { opacity: 1, y: 0 });
+      }
+      return;
+    }
+
+    // Create scrubbed animation timeline for Frame2
+    // Start animation very early in scroll
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: "top bottom",
+        end: "top -10%",
+        scrub: 1,
+      },
+    });
+
+    const rotations = [66, -66, 66, -66, 66, -66];
+
+    // Icons first (position 0)
+    tl.fromTo(
+      iconEls,
+      {
+        opacity: 0,
+        y: ICON_FROM_Y,
+        rotation: (i: number) => rotations[i],
+        transformOrigin: "50% 100%",
+      },
+      {
+        opacity: 1,
+        y: 0,
+        rotation: 0,
+        duration: ICON_DURATION,
+        ease: ICON_EASE,
+        stagger: { each: ICON_STAGGER, from: "start" },
+      },
+      0,
+    );
+
+    // Heading and paragraph run in parallel with icons
+    tl.fromTo(
+      heading,
+      { opacity: FRAME2_HEADING_INITIAL_OPACITY },
+      { opacity: 1, duration: 1, ease: "power2.out" },
+      0.3,
+    );
+
+    tl.fromTo(
+      paragraph,
+      { opacity: 0, y: "2rem" },
+      { opacity: 1, y: 0, duration: 1, ease: "power2.out" },
+      0.3,
+    );
+
+    return () => {
+      for (const st of ScrollTrigger.getAll()) {
+        st.kill();
+      }
+    };
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       className="min-h-screen w-full bg-bg-warm"
       style={{
         paddingTop: SECTION_PADDING_TOP_LG,
@@ -47,22 +138,26 @@ const Frame2 = () => {
       <div className="flex items-center" style={{ gap: FRAME2_GAP }}>
         <div className="min-w-0 flex flex-col" style={{ flex: FRAME2_LEFT_FLEX }}>
           <h2
+            ref={headingRef}
             className="font-fanwood font-normal text-text-primary m-0"
             style={{
               fontSize: FONT_SIZE_SECTION_H2,
               lineHeight: LINE_HEIGHT_HEADING,
+              opacity: FRAME2_HEADING_INITIAL_OPACITY,
             }}
           >
             What I do:
           </h2>
           <div style={{ marginLeft: FRAME2_DESC_MARGIN_LEFT }}>
             <p
+              ref={paragraphRef}
               className="font-fanwood font-normal text-text-primary mb-0"
               style={{
                 fontSize: FONT_SIZE_BODY,
                 lineHeight: LINE_HEIGHT_BODY,
                 maxWidth: PARA_MAX_WIDTH,
                 marginTop: PARA_MARGIN_TOP_SM,
+                opacity: 0,
               }}
             >
               I specialize in creating &ldquo;
@@ -82,12 +177,15 @@ const Frame2 = () => {
             rowGap: GRID_GAP_Y,
           }}
         >
-          {icons.map((icon) => (
+          {icons.map((icon, i) => (
             <img
               key={icon.alt}
+              ref={(el) => {
+                iconRefs.current[i] = el;
+              }}
               src={icon.src}
               alt={icon.alt}
-              style={{ width: "100%", maxWidth: ICON_SIZE, height: ICON_SIZE }}
+              style={{ width: "100%", maxWidth: ICON_SIZE, height: ICON_SIZE, opacity: 0 }}
               className="object-contain"
             />
           ))}

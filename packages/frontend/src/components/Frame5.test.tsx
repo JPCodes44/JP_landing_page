@@ -30,7 +30,9 @@ describe("Frame5", () => {
 
   it("renders heading text 'My Services In Action:'", () => {
     render(<Frame5 />);
-    expect(screen.getByText("My Services In Action:")).toBeInTheDocument();
+    const headings = screen.getAllByText("My Services In Action:");
+    expect(headings).toHaveLength(2);
+    for (const h of headings) expect(h).toBeInTheDocument();
   });
 
   it("renders 'some video' placeholder", () => {
@@ -45,11 +47,11 @@ describe("Frame5", () => {
 
     it("heading is visible (opacity: 1, small size) when reduced motion is preferred", () => {
       render(<Frame5 />);
-      const heading = screen.getByText("My Services In Action:");
-      expect(heading).toBeInTheDocument();
-      // With reduced motion, GSAP sets opacity: 1 and small font size on the heading element
-      // The heading should still be rendered and visible
-      expect(heading.tagName).toBe("H2");
+      const headings = screen.getAllByText("My Services In Action:");
+      // With reduced motion: large heading fades out (opacity 0), small heading visible (opacity 1)
+      const smallHeading = headings.find((h) => (h as HTMLElement).style.fontSize === "8rem");
+      expect(smallHeading).toBeInTheDocument();
+      expect(smallHeading?.tagName).toBe("H2");
     });
   });
 });

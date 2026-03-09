@@ -17,6 +17,8 @@ export const HERO_MAX_WIDTH = "40vw";
 export const PARA_MAX_WIDTH = "40.75rem";
 export const PARA_MARGIN_TOP = "3rem";
 export const PARA_MARGIN_TOP_SM = "2rem";
+export const FRAME2_CONTAINER_HEIGHT = "400vh";
+export const FRAME2_HEADING_INITIAL_OPACITY = 0.25;
 export const FRAME2_GAP = "4rem";
 export const FRAME2_LEFT_FLEX = "55%";
 export const FRAME2_RIGHT_FLEX = "45%";
@@ -78,14 +80,37 @@ export const NAV_GAP = "gap-10";
 
 // Frame5
 export const FRAME5_CONTAINER_HEIGHT = "300vh";
-export const FRAME5_HEADING_INITIAL_SIZE = "9rem";
-export const FRAME5_HEADING_FINAL_SIZE = "3.5rem";
+export const FRAME5_HEADING_INITIAL_SIZE = "13rem";
+export const FRAME5_HEADING_FINAL_SIZE = "8rem";
 export const FRAME5_HEADING_INITIAL_TOP = "38vh";
-export const FRAME5_HEADING_FINAL_TOP = "5.5rem";
+export const FRAME5_HEADING_FINAL_TOP = "7rem";
 export const FRAME5_HEADING_INITIAL_OPACITY = 0.35;
 export const FRAME5_RECT_INITIAL_INSET = "10%";
 export const FRAME5_RECT_INITIAL_HEIGHT = "30vh";
-export const FRAME5_RECT_INITIAL_TOP = "12rem";
+export const FRAME5_RECT_INITIAL_TOP = "calc(35vh + 7rem)";
 export const FRAME5_RECT_BG_COLOR = "#d0ccc8";
-export const FRAME5_SECTION_DARK_BG = "#1a1918";
+export const FRAME5_FROST_BLUR_FINAL = "blur(40px)";
 export const FRAME5_VIDEO_BG_COLOR = "#c2f0c2";
+
+// Frame6
+export const FONT_SIZE_CTA = "6rem";
+export const FONT_SIZE_CTA_MAX_WIDTH = "55vw";
+export const FRAME6_HEADING_INITIAL_OPACITY = 0.3;
+export const FRAME6_ARROW_SIZE = "3.5rem";
+export const FRAME6_FORM_HEIGHT = "100vh";
+export const FRAME6_FORM_PADDING_X = "10rem";
+export const FRAME6_ARROW_BOB_Y = "-0.6rem";
+export const FRAME6_ARROW_BOB_DURATION = 1.2;
+export const FRAME6_FORM_INNER_PADDING = "6rem";
+export const FONT_SIZE_FORM_TITLE = "3rem";
+export const FONT_SIZE_FORM_LABEL = "1.5rem";
+export const FONT_SIZE_FORM_INPUT = "1.1rem";
+export const FONT_SIZE_FORM_SUBMIT = "1.1rem";
+
+// Footer
+export const FOOTER_NAME_SIZE = "20vw";
+export const FOOTER_CONTACT_LABEL_SIZE = "1.8rem";
+export const FOOTER_CONTACT_VALUE_SIZE = "1.8rem";
+export const FOOTER_CONTACT_PADDING_X = "3.75rem";
+export const FOOTER_CONTACT_PADDING_TOP = "14rem";
+export const FOOTER_CONTACT_PADDING_BOTTOM = "10rem";
