@@ -55,25 +55,10 @@ jobs:
           TASK_ID: ${{ steps.task.outputs.task_id }}
         run: |
           set +e
-          bash scripts/run_reviewer.sh "${TASK_ID}"
-          EXIT_CODE=$?
+          bash scripts/run_reviewer.sh "${TASK_ID}" 2>&1 | tee /tmp/reviewer_output.txt
+          EXIT_CODE=${PIPESTATUS[0]}
           set -e
           echo "exit_code=${EXIT_CODE}" >> "$GITHUB_OUTPUT"
-
-      - name: Commit review report
-        env:
-          TASK_ID: ${{ steps.task.outputs.task_id }}
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          REPORT=".agents/logs/reviews/${TASK_ID}.md"
-          if [[ -f "${REPORT}" ]]; then
-            git add "${REPORT}"
-            git diff --staged --quiet || git commit -m "ci: reviewer report for ${TASK_ID}"
-            git push origin "HEAD:${{ github.head_ref }}"
-          else
-            echo "No report file found at ${REPORT}, skipping commit."
-          fi
 
       - name: Comment review report on PR
         uses: actions/github-script@v7
@@ -88,12 +73,11 @@ jobs:
             const reviewerExit = parseInt(process.env.REVIEWER_EXIT || '1');
             const qualityExit = parseInt(process.env.QUALITY_EXIT || '1');
 
-            const reportPath = `.agents/logs/reviews/${taskId}.md`;
-            let reportContent = '(report not generated)';
+            let reviewerOutput = '(not captured)';
             try {
-              reportContent = fs.readFileSync(reportPath, 'utf8');
+              reviewerOutput = fs.readFileSync('/tmp/reviewer_output.txt', 'utf8');
             } catch (e) {
-              reportContent = `Error reading report: ${e.message}`;
+              reviewerOutput = `Error reading reviewer output: ${e.message}`;
             }
 
             let qualityOutput = '(not captured)';
@@ -121,9 +105,13 @@ jobs:
               `\`\`\``,
               `</details>`,
               ``,
-              `---`,
+              `<details>`,
+              `<summary>Reviewer Output</summary>`,
               ``,
-              reportContent,
+              `\`\`\``,
+              reviewerOutput.trim(),
+              `\`\`\``,
+              `</details>`,
               ``,
               allPass
                 ? `**All automated checks passed. Awaiting human review.**`
