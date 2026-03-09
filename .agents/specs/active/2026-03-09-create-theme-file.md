@@ -26,6 +26,9 @@ agent/create-theme-file
 - packages/frontend/src/components/Frame2.tsx
 - packages/frontend/src/components/Frame3.tsx
 - packages/frontend/src/components/Frame4.tsx
+- .agents/specs/active/2026-03-09-create-theme-file.md
+- .agents/logs/reads/create-theme-file.json
+- .agents/logs/runs/create-theme-file.json
 
 ## Forbidden files
 <!-- Files the agent must never touch regardless of what the task seems to require. -->
