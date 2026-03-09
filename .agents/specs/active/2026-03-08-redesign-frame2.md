@@ -19,6 +19,9 @@ agent/redesign-frame2
 - packages/frontend/src/components/Frame2.test.tsx
 - packages/frontend/src/App.tsx
 - packages/frontend/src/App.test.tsx
+- packages/frontend/src/vite-env.d.ts
+- .agents/specs/active/2026-03-08-redesign-frame2.md
+- .agents/logs/reads/redesign-frame2.json
 
 ## Forbidden files
 - package-lock.json
