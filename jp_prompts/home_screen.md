@@ -9,8 +9,7 @@ Read every file in `.agents/policies/` in this order:
 1. `.agents/policies/00-agent-contract.md`
 2. `.agents/policies/01-task-protocol.md`
 3. `.agents/policies/02-validation.md`
-4. `.agents/policies/03-frontend-policy.md` (if task touches frontend)
-5. `.agents/policies/04-reviewer-policy.md` (if reviewing)
+4. `.agents/policies/04-reviewer-policy.md` (if reviewing)
 
 After reading each file, state one key rule from it to prove you read it.
 
@@ -33,6 +32,17 @@ WHY SUFFICIENT:
 ### Step 4 — Implement
 
 Touch ONLY files listed in APPROVED_FILES. Commit with `[spec:<task-slug>] <message>`.
+
+### Step 4.5 - Frontend Conventions
+
+Hard constraints:
+
+- obey the spec exactly; do not expand scope
+- modify only APPROVED_FILES
+- do not use any or @ts-ignore
+- do not add dependencies or change CSS/config unless the spec explicitly allows it
+- complete required validation steps before finishing
+- if the spec is unclear, stop and report instead of guessing
 
 ### Step 5 — Run quality gates
 

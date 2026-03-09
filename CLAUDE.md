@@ -27,12 +27,15 @@ When the framework is chosen, update this file with the specific dev server, bui
 ## Available Skills
 
 Invoke these with `/skill-name` when relevant:
+
 - `/orchestrator` — complex multi-step tasks (plan mode, subagents, self-improvement loop)
 - `/verifier` — before marking anything complete
 - `/refactor-review` — code review and refactor sessions
 - `/bug-fixer` — given a bug report, fix it autonomously
+- `/frontend` - for frontend-specific tasks, use this skill
 
 ## Task Management
+
 Plan First: Write plan to tasks/todo.md with checkable items
 
 Verify Plan: Check in before starting implementation
