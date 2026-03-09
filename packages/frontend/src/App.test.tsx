@@ -14,6 +14,6 @@ describe("App", () => {
     render(<App />);
     const main = screen.getByRole("main");
     expect(main).toBeInTheDocument();
-    expect(main.children).toHaveLength(1);
+    expect(main.children).toHaveLength(2);
   });
 });

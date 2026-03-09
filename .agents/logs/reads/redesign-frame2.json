@@ -1,0 +1,26 @@
+{
+  "task_id": "redesign-frame2",
+  "timestamp": "2026-03-09T00:00:00Z",
+  "classification": "frontend-component",
+  "spec_path": ".agents/specs/active/2026-03-08-redesign-frame2.md",
+  "relevant_files": [
+    "packages/frontend/src/components/Frame1.tsx",
+    "packages/frontend/src/index.css",
+    "packages/frontend/src/App.tsx",
+    "packages/frontend/src/App.test.tsx",
+    "packages/frontend/styles/assets/2d/visuals/slider.png",
+    "packages/frontend/styles/assets/2d/visuals/temperature.png",
+    "packages/frontend/styles/assets/2d/visuals/workflow.png",
+    "packages/frontend/styles/assets/2d/visuals/bell.png",
+    "packages/frontend/styles/assets/2d/visuals/calendar.png",
+    "packages/frontend/styles/assets/2d/visuals/tasks.png"
+  ],
+  "planned_reads": [
+    "packages/frontend/src/components/Frame1.tsx",
+    "packages/frontend/src/index.css",
+    "packages/frontend/src/App.tsx",
+    "packages/frontend/src/App.test.tsx"
+  ],
+  "why_sufficient": "Frame1 establishes all patterns (arrow functions, Tailwind tokens, font classes). index.css has theme tokens. App.tsx/test show integration points.",
+  "summary": "Create Frame2 'What I do' section: two-column layout with heading+body text (left) and 2x3 icon grid (right) on warm beige background."
+}
