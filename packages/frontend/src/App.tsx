@@ -2,27 +2,43 @@ import Frame1 from "./components/Frame1";
 import Frame2 from "./components/Frame2";
 import Frame3 from "./components/Frame3";
 import Frame4 from "./components/Frame4";
+import {
+  FONT_SIZE_LOGO,
+  FONT_SIZE_NAV_LINK,
+  NAVBAR_BACKDROP_BLUR,
+  NAVBAR_BACKDROP_SATURATE,
+  NAVBAR_BORDER,
+  NAVBAR_BOX_SHADOW,
+  NAVBAR_HEIGHT,
+  NAVBAR_PADDING_X,
+} from "./theme";
 
 const App = () => {
   return (
     <div className="bg-bg-warm">
       <main>
         <nav
-          className="sticky top-0 z-50 flex items-center justify-between h-[4.5rem] px-[3.75rem]"
+          className="sticky top-0 z-50 flex items-center justify-between"
           style={{
-            backdropFilter: "blur(8px) saturate(1.58)",
-            WebkitBackdropFilter: "blur(8px) saturate(1.58)",
+            height: NAVBAR_HEIGHT,
+            paddingLeft: NAVBAR_PADDING_X,
+            paddingRight: NAVBAR_PADDING_X,
+            backdropFilter: `${NAVBAR_BACKDROP_BLUR} ${NAVBAR_BACKDROP_SATURATE}`,
+            WebkitBackdropFilter: `${NAVBAR_BACKDROP_BLUR} ${NAVBAR_BACKDROP_SATURATE}`,
             background: "transparent",
-            boxShadow: "0 2px 2px rgba(0,0,0,0.06)",
-            borderBottom: "1px solid rgba(0,0,0,0.06)",
+            boxShadow: NAVBAR_BOX_SHADOW,
+            borderBottom: NAVBAR_BORDER,
           }}
         >
-          <span className="font-fanwood text-[1.375rem] text-text-primary">Justin Mak.</span>
+          <span className="font-fanwood text-text-primary" style={{ fontSize: FONT_SIZE_LOGO }}>
+            Justin Mak.
+          </span>
           <ul className="flex gap-10 list-none m-0 p-0">
             <li>
               <a
                 href="#services"
-                className="font-fanwood text-[1.3rem] font-normal text-text-primary no-underline hover:opacity-70"
+                className="font-fanwood font-normal text-text-primary no-underline hover:opacity-70"
+                style={{ fontSize: FONT_SIZE_NAV_LINK }}
               >
                 services
               </a>
@@ -30,7 +46,8 @@ const App = () => {
             <li>
               <a
                 href="#contact"
-                className="font-fanwood text-[1.3rem] font-normal text-text-primary no-underline hover:opacity-70"
+                className="font-fanwood font-normal text-text-primary no-underline hover:opacity-70"
+                style={{ fontSize: FONT_SIZE_NAV_LINK }}
               >
                 contact
               </a>
@@ -38,7 +55,8 @@ const App = () => {
             <li>
               <a
                 href="#experience"
-                className="font-fanwood text-[1.3rem] font-normal text-text-primary no-underline hover:opacity-70"
+                className="font-fanwood font-normal text-text-primary no-underline hover:opacity-70"
+                style={{ fontSize: FONT_SIZE_NAV_LINK }}
               >
                 experience
               </a>
@@ -46,7 +64,8 @@ const App = () => {
             <li>
               <a
                 href="#about"
-                className="font-fanwood text-[1.3rem] font-normal text-text-primary no-underline hover:opacity-70"
+                className="font-fanwood font-normal text-text-primary no-underline hover:opacity-70"
+                style={{ fontSize: FONT_SIZE_NAV_LINK }}
               >
                 about
               </a>
@@ -56,6 +75,7 @@ const App = () => {
         <Frame1 />
         <Frame2 />
         <Frame3 />
+        <Frame4 />
       </main>
     </div>
   );

@@ -1,6 +1,16 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef } from "react";
+import {
+  COLOR_FRAME3_GREEN,
+  COLOR_FRAME3_TAN,
+  FONT_SIZE_LABEL,
+  FRAME3_CONTAINER_HEIGHT,
+  FRAME3_RECT_INITIAL_HEIGHT,
+  FRAME3_RECT_INITIAL_INSET,
+  FRAME3_RECT_TARGET_HEIGHT,
+  FRAME3_RECT_TARGET_INSET,
+} from "../theme";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -20,7 +30,12 @@ const Frame3 = () => {
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (prefersReducedMotion) {
-      gsap.set(rect, { height: "96vh", left: "2%", right: "2%", backgroundColor: "#c2f0c2" });
+      gsap.set(rect, {
+        height: FRAME3_RECT_TARGET_HEIGHT,
+        left: FRAME3_RECT_TARGET_INSET,
+        right: FRAME3_RECT_TARGET_INSET,
+        backgroundColor: COLOR_FRAME3_GREEN,
+      });
       gsap.set(label, { opacity: 1 });
       return;
     }
@@ -37,10 +52,10 @@ const Frame3 = () => {
     tl.to(
       rect,
       {
-        height: "96vh",
-        left: "2%",
-        right: "2%",
-        backgroundColor: "#c2f0c2",
+        height: FRAME3_RECT_TARGET_HEIGHT,
+        left: FRAME3_RECT_TARGET_INSET,
+        right: FRAME3_RECT_TARGET_INSET,
+        backgroundColor: COLOR_FRAME3_GREEN,
         ease: "none",
         duration: 1,
       },
@@ -54,7 +69,11 @@ const Frame3 = () => {
   }, []);
 
   return (
-    <section ref={wrapperRef} className="relative w-full bg-bg-warm " style={{ height: "300vh" }}>
+    <section
+      ref={wrapperRef}
+      className="relative w-full bg-bg-warm"
+      style={{ height: FRAME3_CONTAINER_HEIGHT }}
+    >
       <div className="sticky top-0 h-screen w-full">
         <div
           ref={rectRef}
@@ -62,16 +81,16 @@ const Frame3 = () => {
           style={{
             top: "50%",
             transform: "translateY(-50%)",
-            left: "10%",
-            right: "10%",
-            height: "48vh",
-            backgroundColor: "#dedad5",
+            left: FRAME3_RECT_INITIAL_INSET,
+            right: FRAME3_RECT_INITIAL_INSET,
+            height: FRAME3_RECT_INITIAL_HEIGHT,
+            backgroundColor: COLOR_FRAME3_TAN,
           }}
         >
           <div
             ref={labelRef}
-            className="flex items-center justify-center h-full font-fanwood text-[2rem] text-text-primary"
-            style={{ opacity: 0 }}
+            className="flex items-center justify-center h-full font-fanwood text-text-primary"
+            style={{ opacity: 0, fontSize: FONT_SIZE_LABEL }}
           >
             SOME COOL VISUAL WOAW
           </div>

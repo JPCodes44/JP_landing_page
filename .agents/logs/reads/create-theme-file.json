@@ -1,0 +1,22 @@
+{
+  "task_id": "create-theme-file",
+  "timestamp": "2026-03-09T00:00:00Z",
+  "classification": "frontend-refactor",
+  "spec_path": ".agents/specs/active/2026-03-09-create-theme-file.md",
+  "relevant_files": [
+    "packages/frontend/src/App.tsx",
+    "packages/frontend/src/components/Frame1.tsx",
+    "packages/frontend/src/components/Frame2.tsx",
+    "packages/frontend/src/components/Frame3.tsx",
+    "packages/frontend/src/components/Frame4.tsx"
+  ],
+  "planned_reads": [
+    "packages/frontend/src/App.tsx",
+    "packages/frontend/src/components/Frame1.tsx",
+    "packages/frontend/src/components/Frame2.tsx",
+    "packages/frontend/src/components/Frame3.tsx",
+    "packages/frontend/src/components/Frame4.tsx"
+  ],
+  "why_sufficient": "All 5 component files contain the magic numbers to be centralized into theme/index.ts. Reading them is sufficient to identify all values needing extraction.",
+  "summary": "Task centralizes magic numbers (spacing, typography, colors, animation durations) from 5 frontend components into a single src/theme/index.ts file, then replaces inline values with named constants."
+}

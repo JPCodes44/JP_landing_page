@@ -4,6 +4,25 @@ import sliderImg from "../../styles/assets/2d/visuals/slider.png";
 import tasksImg from "../../styles/assets/2d/visuals/tasks.png";
 import temperatureImg from "../../styles/assets/2d/visuals/temperature.png";
 import workflowImg from "../../styles/assets/2d/visuals/workflow.png";
+import {
+  FONT_SIZE_BODY,
+  FONT_SIZE_SECTION_H2,
+  FRAME2_DESC_MARGIN_LEFT,
+  FRAME2_GAP,
+  FRAME2_LEFT_FLEX,
+  FRAME2_RIGHT_FLEX,
+  GRID_GAP_X,
+  GRID_GAP_X_WIDE,
+  GRID_GAP_Y,
+  ICON_SIZE,
+  LINE_HEIGHT_BODY,
+  LINE_HEIGHT_HEADING,
+  PARA_MARGIN_TOP_SM,
+  PARA_MAX_WIDTH,
+  SECTION_PADDING_BOTTOM_LG,
+  SECTION_PADDING_TOP_LG,
+  SECTION_PADDING_X,
+} from "../theme";
 
 const icons = [
   { src: sliderImg, alt: "slider" },
@@ -16,14 +35,36 @@ const icons = [
 
 const Frame2 = () => {
   return (
-    <section className="min-h-screen w-full bg-bg-warm pt-[8rem] pb-[6rem] pl-[3.75rem] pr-[3.75rem]">
-      <div className="flex gap-[4rem] items-center">
-        <div className="flex-[55%] min-w-0 flex flex-col">
-          <h2 className="font-fanwood text-[14rem] font-normal leading-[1.1] text-text-primary m-0">
+    <section
+      className="min-h-screen w-full bg-bg-warm"
+      style={{
+        paddingTop: SECTION_PADDING_TOP_LG,
+        paddingBottom: SECTION_PADDING_BOTTOM_LG,
+        paddingLeft: SECTION_PADDING_X,
+        paddingRight: SECTION_PADDING_X,
+      }}
+    >
+      <div className="flex items-center" style={{ gap: FRAME2_GAP }}>
+        <div className="min-w-0 flex flex-col" style={{ flex: FRAME2_LEFT_FLEX }}>
+          <h2
+            className="font-fanwood font-normal text-text-primary m-0"
+            style={{
+              fontSize: FONT_SIZE_SECTION_H2,
+              lineHeight: LINE_HEIGHT_HEADING,
+            }}
+          >
             What I do:
           </h2>
-          <div className="ml-[4.5rem]">
-            <p className="font-fanwood text-[1.9rem] font-normal leading-[1.6] text-text-primary max-w-[40.75rem] mt-[2rem] mb-0">
+          <div style={{ marginLeft: FRAME2_DESC_MARGIN_LEFT }}>
+            <p
+              className="font-fanwood font-normal text-text-primary mb-0"
+              style={{
+                fontSize: FONT_SIZE_BODY,
+                lineHeight: LINE_HEIGHT_BODY,
+                maxWidth: PARA_MAX_WIDTH,
+                marginTop: PARA_MARGIN_TOP_SM,
+              }}
+            >
               I specialize in creating &ldquo;
               <span className="text-accent-green">agentic</span>&rdquo; workflows. That means your
               business doesn&rsquo;t just have tools; it has autonomous systems that handle lead
@@ -32,15 +73,22 @@ const Frame2 = () => {
           </div>
         </div>
         <div
-          className="flex-[45%] min-w-0 grid gap-x-[2rem] gap-y-[2.5rem] gap-x-[7rem] justify-center justify-items-center"
-          style={{ gridTemplateColumns: "repeat(2, auto)" }}
+          className="min-w-0 justify-center justify-items-center"
+          style={{
+            flex: FRAME2_RIGHT_FLEX,
+            display: "grid",
+            gridTemplateColumns: "repeat(2, auto)",
+            columnGap: GRID_GAP_X_WIDE,
+            rowGap: GRID_GAP_Y,
+          }}
         >
           {icons.map((icon) => (
             <img
               key={icon.alt}
               src={icon.src}
               alt={icon.alt}
-              className="w-full max-w-[12.5rem] h-[12.5rem] object-contain"
+              style={{ width: "100%", maxWidth: ICON_SIZE, height: ICON_SIZE }}
+              className="object-contain"
             />
           ))}
         </div>
