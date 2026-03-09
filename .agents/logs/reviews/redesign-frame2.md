@@ -1,6 +1,6 @@
 # Review Report: redesign-frame2
 
-Generated: 2026-03-09T08:53:39Z
+Generated: 2026-03-09T08:57:34Z
 
 ---
 
@@ -58,6 +58,7 @@ out-of-scope file changes detected:
 ### 5. Commit Messages
 
 - **Result: [PASS]**
+  - `f800bc7`: OK — added a worktree hook for prompts with a /task-<task-name> keyword along with other policy changes
   - `7f1c465`: OK — [spec:redesign-frame2] Implement Frame2 "What I do" section
 
 
@@ -76,13 +77,15 @@ out-of-scope file changes detected:
 
 New functions/classes introduced:
 ```
-const App = () => {
+(none detected)
 ```
 
 ### J2. Dead Code [REVIEW REQUIRED]
 
 Removed import/call sites (lines removed containing calls or imports):
 ```
+    expect(main.children).toHaveLength(1);
+export default function App() {
 (none detected)
 - Spec exists and all fields are filled (not template placeholders)
 ## Review Steps (stop on first violation)
@@ -111,8 +114,6 @@ Config files changed:
 New exported symbols:
 ```
 export default function App() {
-export default App;
-export default Frame2;
 ```
 
 New dependencies (package.json diff):

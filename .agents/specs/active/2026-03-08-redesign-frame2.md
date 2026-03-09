@@ -22,6 +22,16 @@ agent/redesign-frame2
 - packages/frontend/src/vite-env.d.ts
 - .agents/specs/active/2026-03-08-redesign-frame2.md
 - .agents/logs/reads/redesign-frame2.json
+- .agents/logs/runs/redesign-frame2.json
+- .agents/logs/reviews/redesign-frame2.md
+- .agents/logs/runs/redesign-and-animate-frame3.start
+- .agents/policies/04-reviewer-policy.md
+- .agents/specs/active/2026-03-09-redesign-and-animate-frame3.md
+- .claude/settings.json
+- docs/engineering/ai-contribution-policy.md
+- jp_prompts/home_screen.md
+- packages/frontend/src/components/Frame1.tsx
+- scripts/prompt_worktree_hook.sh
 
 ## Forbidden files
 - package-lock.json
