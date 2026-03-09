@@ -7,7 +7,6 @@
 # NON-BLOCKING: post-commit hooks cannot abort a commit. This hook always
 # exits 0. The reviewer's exit code is shown as informational output only.
 
-GREEN='\033[0;32m'
 RED='\033[0;31m'
 BOLD='\033[1m'
 NC='\033[0m'
@@ -30,11 +29,8 @@ REVIEWER_EXIT=$?
 set -e
 
 echo ""
-if [[ $REVIEWER_EXIT -eq 0 ]]; then
-  echo -e "${GREEN}[post-commit] Reviewer passed. Report: .agents/logs/reviews/${TASK_ID}.md${NC}"
-else
+if [[ $REVIEWER_EXIT -ne 0 ]]; then
   echo -e "${RED}[post-commit] Reviewer found issues — fix before opening a PR.${NC}"
-  echo -e "${RED}Report: .agents/logs/reviews/${TASK_ID}.md${NC}"
 fi
 echo ""
 
