@@ -19,7 +19,7 @@ These cannot be enforced by tooling — you are responsible:
 |---|---|
 | Implementing | `APPROVED_FILES` only |
 | Scout | `.agents/learnings/` only — no commits, no side-effect scripts |
-| Reviewer | `.agents/logs/reviews/` only |
+| Reviewer | stdout only — no file writes |
 | Migration | Directories named in spec's `APPROVED_FILES` only |
 
 ## Testing
