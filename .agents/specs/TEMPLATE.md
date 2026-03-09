@@ -38,8 +38,10 @@ agent/
 
 ## Domain Policy
 <!-- Which domain policy applies. Remove inapplicable lines. -->
-- `.agents/policies/global-policy.md` (always)
-- `.agents/policies/frontend-policy.md` (if touching packages/frontend/)
+- `.agents/policies/00-agent-contract.md` (always)
+- `.agents/policies/01-task-protocol.md` (always)
+- `.agents/policies/02-validation.md` (always)
+- `.agents/policies/03-frontend-policy.md` (if touching packages/frontend/)
 
 ## Read Before Starting
 <!-- Files the agent must read before writing any code. -->

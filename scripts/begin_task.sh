@@ -2,7 +2,7 @@
 # scripts/begin_task.sh <task-id> [--force]
 #
 # Mandatory task-start step. Must be run before any Write/Edit/MultiEdit.
-# Reads the spec and context-retrieval-policy, invokes Claude to classify
+# Reads the spec and global policy, invokes Claude to classify
 # the task and plan file reads, then writes a read receipt to
 # .agents/logs/reads/<task-id>.json.
 #
@@ -33,8 +33,9 @@ fi
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 READS_DIR="${REPO_ROOT}/.agents/logs/reads"
 RECEIPT="${READS_DIR}/${TASK_ID}.json"
-POLICY_PATH="${REPO_ROOT}/.agents/policies/context-retrieval-policy.md"
-GLOBAL_POLICY="${REPO_ROOT}/.agents/policies/global-policy.md"
+POLICY_PATH="${REPO_ROOT}/.agents/policies/00-agent-contract.md"
+TASK_PROTOCOL="${REPO_ROOT}/.agents/policies/01-task-protocol.md"
+VALIDATION="${REPO_ROOT}/.agents/policies/02-validation.md"
 
 # ─── Idempotency guard ────────────────────────────────────────────────────────
 if [[ -f "$RECEIPT" && "$FORCE" == false ]]; then
@@ -72,22 +73,30 @@ POLICY_CONTENT=""
 if [[ -f "$POLICY_PATH" ]]; then
   POLICY_CONTENT=$(cat "$POLICY_PATH")
 else
-  echo -e "${YELLOW}[begin_task] WARNING: context-retrieval-policy.md not found.${NC}"
+  echo -e "${YELLOW}[begin_task] WARNING: 00-agent-contract.md not found.${NC}"
 fi
 
-GLOBAL_CONTENT=""
-if [[ -f "$GLOBAL_POLICY" ]]; then
-  GLOBAL_CONTENT=$(cat "$GLOBAL_POLICY")
+PROTOCOL_CONTENT=""
+if [[ -f "$TASK_PROTOCOL" ]]; then
+  PROTOCOL_CONTENT=$(cat "$TASK_PROTOCOL")
+fi
+
+VALIDATION_CONTENT=""
+if [[ -f "$VALIDATION" ]]; then
+  VALIDATION_CONTENT=$(cat "$VALIDATION")
 fi
 
 # ─── Build prompt ─────────────────────────────────────────────────────────────
 PROMPT="You are performing a mandatory context retrieval step before implementing a software task.
 
-## Context Retrieval Policy
+## Agent Contract
 ${POLICY_CONTENT}
 
-## Global Policy
-${GLOBAL_CONTENT}
+## Task Protocol
+${PROTOCOL_CONTENT}
+
+## Validation
+${VALIDATION_CONTENT}
 
 ## Task Spec
 ${SPEC_CONTENT}

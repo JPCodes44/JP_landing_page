@@ -26,7 +26,7 @@ if [[ -n "$REPO_ROOT" && ! -f "${REPO_ROOT}/.agents/logs/reads/${TASK_ID}.json" 
   echo ""
   echo "    bash scripts/begin_task.sh ${TASK_ID}"
   echo ""
-  echo "  This reads the spec and context-retrieval-policy, classifies the task,"
+  echo "  This reads the spec and agent policies, classifies the task,"
   echo "  plans your file reads, and writes a receipt that unlocks this gate."
   echo ""
   exit 1
@@ -43,6 +43,29 @@ fi
 REPO_ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo "")
 if [[ -n "$REPO_ROOT" ]]; then
   FILE_PATH="${FILE_PATH#"${REPO_ROOT}/"}"
+fi
+
+# ─── Protected path block (hard block) ──────────────────────────────────────
+BLOCKED=false
+REASON=""
+case "$FILE_PATH" in
+  .github/workflows/*)  BLOCKED=true; REASON="CI workflow files are protected" ;;
+  deployment/*)         BLOCKED=true; REASON="Deployment config is protected" ;;
+  infra/*)              BLOCKED=true; REASON="Infrastructure config is protected" ;;
+  .env|.env.*)          BLOCKED=true; REASON="Environment files are protected" ;;
+  bun.lockb)            BLOCKED=true; REASON="Lockfiles are protected" ;;
+  package-lock.json)    BLOCKED=true; REASON="Lockfiles are protected" ;;
+  yarn.lock)            BLOCKED=true; REASON="Lockfiles are protected" ;;
+  pnpm-lock.yaml)       BLOCKED=true; REASON="Lockfiles are protected" ;;
+esac
+
+if [[ "$BLOCKED" == true ]]; then
+  echo ""
+  echo "[PROTECTED PATH] Write blocked: ${FILE_PATH}"
+  echo "  ${REASON}."
+  echo "  Agents cannot edit this path unless the spec explicitly names it in APPROVED_FILES."
+  echo ""
+  exit 1
 fi
 
 # ─── Map file path to scan directories ────────────────────────────────────────

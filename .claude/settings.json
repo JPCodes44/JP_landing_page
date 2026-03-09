@@ -12,6 +12,15 @@
             "command": "bash /home/jp/JP_landing_page/scripts/pre_tool_use_scan.sh"
           }
         ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash /home/jp/JP_landing_page/scripts/pre_bash_scan.sh"
+          }
+        ]
       }
     ]
   }

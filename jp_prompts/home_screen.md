@@ -6,11 +6,11 @@ Before writing ANY code, you MUST complete these steps IN ORDER. Do not skip any
 
 Read every file in `.agents/policies/` in this order:
 
-1. `.agents/policies/global-policy.md`
-2. `.agents/policies/context-retrieval-policy.md`
-3. `.agents/policies/frontend-policy.md` (if task touches frontend)
-4. `.agents/policies/testing-policy.md`
-5. `.agents/policies/rollout.md`
+1. `.agents/policies/00-agent-contract.md`
+2. `.agents/policies/01-task-protocol.md`
+3. `.agents/policies/02-validation.md`
+4. `.agents/policies/03-frontend-policy.md` (if task touches frontend)
+5. `.agents/policies/04-reviewer-policy.md` (if reviewing)
 
 After reading each file, state one key rule from it to prove you read it.
 

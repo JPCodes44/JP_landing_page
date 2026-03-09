@@ -20,7 +20,7 @@ This policy defines the system that enforces those guarantees.
 3. Implement  →  Work only on files in APPROVED_FILES
 4. Gate       →  Run scripts/run_quality_gates.sh and fix any failures
 5. PR         →  Open a pull request from agent/<task-slug> to main
-6. Review     →  Human or reviewer agent approves per reviewer-policy.md
+6. Review     →  Human or reviewer agent approves per 04-reviewer-policy.md
 7. Merge      →  Squash merge only, referencing the spec task name
 ```
 
@@ -96,9 +96,9 @@ Never use `--no-verify` or `--skip`. If a gate is wrong, fix the gate — open a
 
 ## Roles
 
-- **Scout agent**: Read-only research. Outputs findings to `.agents/learnings/` and a spec draft. See `scout-policy.md`.
+- **Scout agent**: Read-only research. Outputs findings to `.agents/learnings/` and a spec draft. See scout rules in `00-agent-contract.md`.
 - **Implementing agent**: Follows the spec, touches only approved files, opens the PR.
-- **Reviewer agent/human**: Verifies gates passed, spec matches diff, criteria are met. See `reviewer-policy.md`.
+- **Reviewer agent/human**: Verifies gates passed, spec matches diff, criteria are met. See `04-reviewer-policy.md`.
 
 ---
 

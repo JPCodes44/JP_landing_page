@@ -33,14 +33,16 @@ agent/redesign-frame1
 - Arrow function component syntax required
 
 ## Domain Policy
-- `.agents/policies/global-policy.md` (always)
-- `.agents/policies/frontend-policy.md` (if touching packages/frontend/)
+- `.agents/policies/00-agent-contract.md` (always)
+- `.agents/policies/01-task-protocol.md` (always)
+- `.agents/policies/02-validation.md` (always)
+- `.agents/policies/03-frontend-policy.md` (if touching packages/frontend/)
 
 ## Read Before Starting
 - packages/frontend/src/components/Frame1.tsx
 - packages/frontend/src/components/Frame1.css
 - packages/frontend/src/index.css
-- .agents/policies/frontend-policy.md
+- .agents/policies/03-frontend-policy.md
 
 ## Implementation Notes
 - Add color tokens (--color-bg-warm, --color-text-primary, --color-accent-green, --color-border-warm) to @theme in index.css
