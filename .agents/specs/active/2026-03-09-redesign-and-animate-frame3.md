@@ -19,7 +19,10 @@ agent/redesign-and-animate-frame3
 - packages/frontend/src/components/Frame3.test.tsx
 - packages/frontend/src/App.tsx
 - packages/frontend/src/App.test.tsx
+- packages/frontend/vitest.config.ts
 - .agents/specs/active/2026-03-09-redesign-and-animate-frame3.md
+- .agents/logs/reads/redesign-and-animate-frame3.json
+- .agents/logs/runs/redesign-and-animate-frame3.json
 
 ## Forbidden files
 - package-lock.json

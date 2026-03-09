@@ -1,0 +1,20 @@
+{
+  "task_id": "redesign-and-animate-frame3",
+  "timestamp": "2026-03-09T00:00:00Z",
+  "classification": "frontend-only",
+  "spec_path": ".agents/specs/active/2026-03-09-redesign-and-animate-frame3.md",
+  "relevant_files": [
+    "packages/frontend/src/components/Frame3.tsx",
+    "packages/frontend/src/components/Frame3.test.tsx",
+    "packages/frontend/src/App.tsx",
+    "packages/frontend/src/App.test.tsx"
+  ],
+  "planned_reads": [
+    "packages/frontend/src/App.tsx",
+    "packages/frontend/src/components/Frame1.tsx",
+    "packages/frontend/src/components/Frame2.tsx",
+    "packages/frontend/src/index.css"
+  ],
+  "why_sufficient": "Frame3 is an isolated new component; App.tsx only needs import + element addition.",
+  "summary": "Create Frame3 as a scroll-driven expansion component: a rounded rectangle anchored at the bottom that grows from ~48vh to ~78vh tall as the user scrolls, with background interpolating from warm-gray to mint-green. Wire it into App.tsx after Frame2. Update App.test.tsx children count. All files are within the approved scope."
+}
