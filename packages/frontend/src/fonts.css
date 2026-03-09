@@ -1,0 +1,100 @@
+/* Fanwood Text */
+@font-face {
+  font-family: "Fanwood Text";
+  src: url("../styles/fonts/FanwoodText-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Fanwood Text";
+  src: url("../styles/fonts/FanwoodText-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* Satoshi (variable) */
+@font-face {
+  font-family: Satoshi;
+  src: url("../styles/fonts/Satoshi-Variable.woff2") format("woff2");
+  font-weight: 300 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: Satoshi;
+  src: url("../styles/fonts/Satoshi-VariableItalic.woff2") format("woff2");
+  font-weight: 300 900;
+  font-style: italic;
+}
+
+/* Satoshi (static weights) */
+@font-face {
+  font-family: Satoshi;
+  src: url("../styles/fonts/Satoshi-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: Satoshi;
+  src: url("../styles/fonts/Satoshi-LightItalic.woff2") format("woff2");
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: Satoshi;
+  src: url("../styles/fonts/Satoshi-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: Satoshi;
+  src: url("../styles/fonts/Satoshi-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: Satoshi;
+  src: url("../styles/fonts/Satoshi-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: Satoshi;
+  src: url("../styles/fonts/Satoshi-MediumItalic.woff2") format("woff2");
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: Satoshi;
+  src: url("../styles/fonts/Satoshi-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: Satoshi;
+  src: url("../styles/fonts/Satoshi-BoldItalic.woff2") format("woff2");
+  font-weight: 700;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: Satoshi;
+  src: url("../styles/fonts/Satoshi-Black.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: Satoshi;
+  src: url("../styles/fonts/Satoshi-BlackItalic.woff2") format("woff2");
+  font-weight: 900;
+  font-style: italic;
+}

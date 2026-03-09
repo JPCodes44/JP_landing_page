@@ -4,8 +4,8 @@
   "workspaces": ["packages/*"],
   "scripts": {
     "dev": "bun run --cwd packages/backend dev & bun run --cwd packages/frontend dev",
-    "lint": "biome check .",
-    "lint:fix": "biome check --fix .",
+    "lint": "biome check . && stylelint \"**/*.{css,scss}\" && htmlhint \"**/*.html\"",
+    "lint:fix": "biome check --fix . && stylelint --fix \"**/*.{css,scss}\"",
     "typecheck": "bun run --cwd packages/common build && bun run --cwd packages/backend typecheck && bun run --cwd packages/frontend typecheck",
     "test": "bun run --cwd packages/common test && bun run --cwd packages/backend test && bun run --cwd packages/frontend test",
     "build": "bun run --cwd packages/common build && bun run --cwd packages/backend build && bun run --cwd packages/frontend build",
@@ -14,6 +14,10 @@
   "devDependencies": {
     "@biomejs/biome": "^1.9.0",
     "@testing-library/react": "^16.3.2",
+    "htmlhint": "^1.9.2",
+    "prettier": "^3.8.1",
+    "stylelint": "^17.4.0",
+    "stylelint-config-standard": "^40.0.0",
     "typescript": "^5.7.0",
     "vitest": "^4.0.18"
   }

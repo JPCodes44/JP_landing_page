@@ -19,6 +19,7 @@ Read these in order before anything else:
 3. The global policy: `.agents/policies/global-policy.md`
 
 Extract from the spec:
+
 - **Objective** — the exact outcome
 - **Allowed files** — the complete write surface
 - **Forbidden files** — never touch these
@@ -31,11 +32,11 @@ Extract from the spec:
 
 Classify the task as exactly one of:
 
-| Class | When to use |
-|---|---|
-| `frontend-only` | All allowed files are under `packages/frontend/` |
-| `backend-only` | All allowed files are under `packages/backend/` |
-| `app+common` | Allowed files span one app AND `packages/common/` |
+| Class           | When to use                                              |
+| --------------- | -------------------------------------------------------- |
+| `frontend-only` | All allowed files are under `packages/frontend/`         |
+| `backend-only`  | All allowed files are under `packages/backend/`          |
+| `app+common`    | Allowed files span one app AND `packages/common/`        |
 | `cross-cutting` | Allowed files span multiple apps or touch root config/CI |
 
 The classification determines which directories you are permitted to read during exploration.
@@ -46,13 +47,13 @@ The classification determines which directories you are permitted to read during
 
 Retrieve context in this order. Stop when implementation file, test file, and dependency context are clear. Do not exhaust the budget for its own sake.
 
-| Stage | Action | Limit |
-|---|---|---|
-| 1 | Collect file paths from `Allowed files` | 10 file paths max |
-| 2 | Symbol/import/reference search (grep, Glob) | 5 search operations max |
-| 3 | Snippet reads (targeted line ranges) | 5 snippet reads max |
-| 4 | Full file reads | 3 full file reads max |
-| 5 | Outward dependency hop (one level only) | 1 hop max |
+| Stage | Action                                      | Limit                   |
+| ----- | ------------------------------------------- | ----------------------- |
+| 1     | Collect file paths from `Allowed files`     | 10 file paths max       |
+| 2     | Symbol/import/reference search (grep, Glob) | 5 search operations max |
+| 3     | Snippet reads (targeted line ranges)        | 5 snippet reads max     |
+| 4     | Full file reads                             | 3 full file reads max   |
+| 5     | Outward dependency hop (one level only)     | 1 hop max               |
 
 If the budget is exhausted and you are still blocked: report the ambiguity. Do not broaden scope to resolve it.
 

@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@theme {
+  --font-fanwood: "Fanwood Text", serif;
+  --font-satoshi: "Satoshi", sans-serif;
+  --color-bg-warm: #f5f3ef;
+  --color-text-primary: #2d2d2d;
+  --color-accent-green: #7a8b5c;
+  --color-border-warm: #d4d0c8;
+}

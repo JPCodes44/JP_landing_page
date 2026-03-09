@@ -1,10 +1,9 @@
-import ContactForm from "./components/ContactForm";
+import Frame1 from "./components/Frame1";
 
 export default function App() {
   return (
     <main>
-      <h1>Get in Touch</h1>
-      <ContactForm />
+      <Frame1 />
     </main>
   );
 }

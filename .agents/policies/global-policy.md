@@ -69,6 +69,13 @@ bash scripts/emit_run_log.sh <task-id> \
 
 The log captures: spec, branch, worktree, start/end time, changed files, commands run, gate results, and final summary. It is the forensic record of the run. Do not skip it.
 
+## Testing
+
+See `testing-policy.md` for the full testing policy. Summary:
+- Never mock internal modules — use real implementations.
+- All tests must pass. No skips, no `.only`, no commented-out failures.
+- Tests that only assert on mock calls are not tests. Rewrite them.
+
 ## Completion Criteria
 
 A task is complete only when all of the following are true:

@@ -1,0 +1,19 @@
+{
+  "task_id": "redesign-frame1",
+  "timestamp": "2026-03-08T21:55:00Z",
+  "classification": "frontend-component-rewrite",
+  "spec_path": ".agents/specs/active/2026-03-08-redesign-frame1.md",
+  "relevant_files": [
+    "packages/frontend/src/components/Frame1.tsx",
+    "packages/frontend/src/components/Frame1.css",
+    "packages/frontend/src/index.css"
+  ],
+  "planned_reads": [
+    "packages/frontend/src/components/Frame1.tsx",
+    "packages/frontend/src/components/Frame1.css",
+    "packages/frontend/src/index.css",
+    ".agents/policies/frontend-policy.md"
+  ],
+  "why_sufficient": "These are the three files being modified plus the frontend policy governing how the rewrite must be done. No other files are affected.",
+  "summary": "Rewrite Frame1 from custom CSS to Tailwind utility classes with color tokens, arrow function syntax, and responsive units."
+}
