@@ -1,3 +1,4 @@
+import { useBreakpoint } from "../hooks/useBreakpoint";
 import {
   FONT_SIZE_BODY,
   FONT_SIZE_HERO_H1,
@@ -9,13 +10,19 @@ import {
 } from "../theme";
 
 const Frame1 = () => {
+  const bp = useBreakpoint();
+  const heroWidth = bp === "mobile" ? "90vw" : HERO_WIDTH;
+  const heroMaxWidth = bp === "mobile" ? "90vw" : HERO_MAX_WIDTH;
+  const fontSize = bp === "mobile" ? "2.8rem" : FONT_SIZE_HERO_H1;
+  const bodySize = bp === "mobile" ? "1.4rem" : FONT_SIZE_BODY;
+
   return (
     <section className="min-h-screen w-full bg-bg-warm flex items-center justify-center">
-      <div className="flex flex-col" style={{ width: HERO_WIDTH }}>
+      <div className="flex flex-col" style={{ width: heroWidth }}>
         <h1
           className="font-fanwood font-normal text-text-primary m-0"
           style={{
-            fontSize: FONT_SIZE_HERO_H1,
+            fontSize,
             lineHeight: LINE_HEIGHT_HEADING,
           }}
         >
@@ -25,10 +32,10 @@ const Frame1 = () => {
         <p
           className="font-fanwood font-normal text-text-primary mb-0"
           style={{
-            fontSize: FONT_SIZE_BODY,
+            fontSize: bodySize,
             lineHeight: LINE_HEIGHT_BODY,
             marginTop: PARA_MARGIN_TOP,
-            maxWidth: HERO_MAX_WIDTH,
+            maxWidth: heroMaxWidth,
           }}
         >
           Hi, I'm Justin. I transform manual bottlenecks into automated growth engines. No robotic

@@ -1,6 +1,7 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef } from "react";
+import { useBreakpoint } from "../hooks/useBreakpoint";
 import {
   COLOR_FRAME3_GREEN,
   COLOR_FRAME3_TAN,
@@ -15,9 +16,13 @@ import {
 gsap.registerPlugin(ScrollTrigger);
 
 const Frame3 = () => {
+  const bp = useBreakpoint();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const rectRef = useRef<HTMLDivElement>(null);
   const labelRef = useRef<HTMLDivElement>(null);
+
+  const labelSize = bp === "mobile" ? "1.2rem" : FONT_SIZE_LABEL;
+  const rectInitialInset = bp === "mobile" ? "4%" : FRAME3_RECT_INITIAL_INSET;
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
@@ -84,8 +89,8 @@ const Frame3 = () => {
           style={{
             top: "50%",
             transform: "translateY(-50%)",
-            left: FRAME3_RECT_INITIAL_INSET,
-            right: FRAME3_RECT_INITIAL_INSET,
+            left: rectInitialInset,
+            right: rectInitialInset,
             height: FRAME3_RECT_INITIAL_HEIGHT,
             backgroundColor: COLOR_FRAME3_TAN,
           }}
@@ -93,7 +98,7 @@ const Frame3 = () => {
           <div
             ref={labelRef}
             className="flex items-center justify-center h-full font-fanwood text-text-primary"
-            style={{ opacity: 0, fontSize: FONT_SIZE_LABEL }}
+            style={{ opacity: 0, fontSize: labelSize }}
           >
             SOME COOL VISUAL WOAW
           </div>

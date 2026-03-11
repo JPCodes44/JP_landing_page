@@ -1,6 +1,7 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef, useState } from "react";
+import { type Breakpoint, useBreakpoint } from "../hooks/useBreakpoint";
 import {
   FONT_SIZE_CTA,
   FONT_SIZE_CTA_MAX_WIDTH,
@@ -21,11 +22,18 @@ import {
 
 gsap.registerPlugin(ScrollTrigger);
 
-const ContactForm = () => {
+const ContactForm = ({ bp }: { bp: Breakpoint }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [comments, setComments] = useState("");
+
+  const isMobile = bp === "mobile";
+  const formPadding = isMobile ? "2rem" : FRAME6_FORM_INNER_PADDING;
+  const firstNameFlex = isMobile ? "0 0 100%" : "0 0 46%";
+  const lastNameFlex = isMobile ? "0 0 100%" : "0 0 38%";
+  const emailWidth = isMobile ? "100%" : "55%";
+  const nameRowDirection = isMobile ? "column" : "row";
 
   const inputClass =
     "font-fanwood text-text-primary bg-bg-warm border border-border-warm w-full outline-none";
@@ -36,7 +44,7 @@ const ContactForm = () => {
   const gapStyle = { gap: "0.5rem" };
 
   return (
-    <div style={{ padding: FRAME6_FORM_INNER_PADDING }}>
+    <div style={{ padding: formPadding }}>
       <h3
         className="font-fanwood text-text-primary uppercase m-0"
         style={{
@@ -49,10 +57,13 @@ const ContactForm = () => {
         Contact Me.
       </h3>
 
-      <div className="flex flex-col" style={{ gap: "1.25rem", paddingTop: "5rem" }}>
+      <div
+        className="flex flex-col"
+        style={{ gap: "1.25rem", paddingTop: isMobile ? "2rem" : "5rem" }}
+      >
         {/* First + Last Name */}
-        <div className="flex" style={{ gap: "1.5rem" }}>
-          <div className="flex flex-col" style={{ ...gapStyle, flex: "0 0 46%" }}>
+        <div style={{ display: "flex", flexDirection: nameRowDirection, gap: "1.5rem" }}>
+          <div className="flex flex-col" style={{ ...gapStyle, flex: firstNameFlex }}>
             <label htmlFor="firstName" className={labelClass} style={labelStyle}>
               First Name
             </label>
@@ -70,7 +81,7 @@ const ContactForm = () => {
               onChange={(e) => setFirstName(e.target.value)}
             />
           </div>
-          <div className="flex flex-col" style={{ ...gapStyle, flex: "0 0 38%" }}>
+          <div className="flex flex-col" style={{ ...gapStyle, flex: lastNameFlex }}>
             <label htmlFor="lastName" className={labelClass} style={labelStyle}>
               Last Name
             </label>
@@ -91,7 +102,7 @@ const ContactForm = () => {
         </div>
 
         {/* Email */}
-        <div className="flex flex-col" style={{ ...gapStyle, width: "55%" }}>
+        <div className="flex flex-col" style={{ ...gapStyle, width: emailWidth }}>
           <label htmlFor="email" className={labelClass} style={labelStyle}>
             Email
           </label>
@@ -112,7 +123,7 @@ const ContactForm = () => {
         </div>
 
         {/* Comments — slightly narrower than submit row */}
-        <div className="flex flex-col" style={{ ...gapStyle, width: "90%" }}>
+        <div className="flex flex-col" style={{ ...gapStyle, width: isMobile ? "100%" : "90%" }}>
           <label htmlFor="comments" className={labelClass} style={labelStyle}>
             Comments
           </label>
@@ -152,10 +163,21 @@ const ContactForm = () => {
   );
 };
 
+// Suppress unused import warning — FONT_SIZE_FORM_SUBMIT is exported from theme for future use
+void FONT_SIZE_FORM_SUBMIT;
+
 const Frame6 = () => {
+  const bp = useBreakpoint();
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const arrowRef = useRef<HTMLDivElement>(null);
+
+  const isMobile = bp === "mobile";
+  const ctaFontSize = isMobile ? "3rem" : FONT_SIZE_CTA;
+  const ctaMaxWidth = isMobile ? "90vw" : FONT_SIZE_CTA_MAX_WIDTH;
+  const sectionPaddingX = isMobile ? "1.5rem" : SECTION_PADDING_X;
+  const formWidth = isMobile ? "100%" : `calc(100% - ${FRAME6_FORM_PADDING_X} * 2)`;
+  const sectionPaddingTop = isMobile ? "8rem" : "50rem";
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -210,10 +232,10 @@ const Frame6 = () => {
       ref={sectionRef}
       className="min-h-screen w-full bg-bg-warm flex flex-col items-center"
       style={{
-        paddingTop: "50rem",
+        paddingTop: sectionPaddingTop,
         paddingBottom: SECTION_PADDING_BOTTOM_LG,
-        paddingLeft: SECTION_PADDING_X,
-        paddingRight: SECTION_PADDING_X,
+        paddingLeft: sectionPaddingX,
+        paddingRight: sectionPaddingX,
       }}
     >
       {/* CTA heading */}
@@ -222,10 +244,10 @@ const Frame6 = () => {
           ref={headingRef}
           className="font-fanwood font-normal text-text-primary text-center m-0"
           style={{
-            fontSize: FONT_SIZE_CTA,
+            fontSize: ctaFontSize,
             lineHeight: LINE_HEIGHT_HEADING,
             opacity: FRAME6_HEADING_INITIAL_OPACITY,
-            maxWidth: FONT_SIZE_CTA_MAX_WIDTH,
+            maxWidth: ctaMaxWidth,
           }}
         >
           Ready to stop working for your business and let it work for you?
@@ -265,10 +287,7 @@ const Frame6 = () => {
       </div>
 
       {/* Form with dashed SVG border overlay */}
-      <div
-        className="relative bg-white"
-        style={{ width: `calc(100% - ${FRAME6_FORM_PADDING_X} * 2)` }}
-      >
+      <div className="relative bg-white" style={{ width: formWidth }}>
         {/* Dashed border — sits on top, pointer-events off */}
         <svg
           className="absolute inset-0 text-text-primary pointer-events-none"
@@ -289,7 +308,7 @@ const Frame6 = () => {
           />
         </svg>
 
-        <ContactForm />
+        <ContactForm bp={bp} />
       </div>
     </section>
   );

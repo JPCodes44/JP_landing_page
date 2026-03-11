@@ -5,6 +5,7 @@ import Frame3 from "./components/Frame3";
 import Frame4 from "./components/Frame4";
 import Frame5 from "./components/Frame5";
 import Frame6 from "./components/Frame6";
+import { useBreakpoint } from "./hooks/useBreakpoint";
 import {
   FONT_SIZE_LOGO,
   FONT_SIZE_NAV_LINK,
@@ -17,6 +18,11 @@ import {
 } from "./theme";
 
 const App = () => {
+  const bp = useBreakpoint();
+  const navPaddingX = bp === "mobile" ? "1.5rem" : NAVBAR_PADDING_X;
+  const navLogoSize = bp === "mobile" ? "1.1rem" : FONT_SIZE_LOGO;
+  const navLinkSize = bp === "mobile" ? "1rem" : FONT_SIZE_NAV_LINK;
+
   return (
     <div className="bg-bg-warm">
       <main>
@@ -25,8 +31,8 @@ const App = () => {
           className="sticky top-0 z-50 flex items-center justify-between"
           style={{
             height: NAVBAR_HEIGHT,
-            paddingLeft: NAVBAR_PADDING_X,
-            paddingRight: NAVBAR_PADDING_X,
+            paddingLeft: navPaddingX,
+            paddingRight: navPaddingX,
             backdropFilter: `${NAVBAR_BACKDROP_BLUR} ${NAVBAR_BACKDROP_SATURATE}`,
             WebkitBackdropFilter: `${NAVBAR_BACKDROP_BLUR} ${NAVBAR_BACKDROP_SATURATE}`,
             background: "transparent",
@@ -34,47 +40,49 @@ const App = () => {
             borderBottom: NAVBAR_BORDER,
           }}
         >
-          <span className="font-fanwood text-text-primary" style={{ fontSize: FONT_SIZE_LOGO }}>
+          <span className="font-fanwood text-text-primary" style={{ fontSize: navLogoSize }}>
             Justin Mak.
           </span>
-          <ul className="flex gap-10 list-none m-0 p-0">
-            <li>
-              <a
-                href="#services"
-                className="font-fanwood font-normal text-text-primary no-underline hover:opacity-70"
-                style={{ fontSize: FONT_SIZE_NAV_LINK }}
-              >
-                services
-              </a>
-            </li>
-            <li>
-              <a
-                href="#contact"
-                className="font-fanwood font-normal text-text-primary no-underline hover:opacity-70"
-                style={{ fontSize: FONT_SIZE_NAV_LINK }}
-              >
-                contact
-              </a>
-            </li>
-            <li>
-              <a
-                href="#experience"
-                className="font-fanwood font-normal text-text-primary no-underline hover:opacity-70"
-                style={{ fontSize: FONT_SIZE_NAV_LINK }}
-              >
-                experience
-              </a>
-            </li>
-            <li>
-              <a
-                href="#about"
-                className="font-fanwood font-normal text-text-primary no-underline hover:opacity-70"
-                style={{ fontSize: FONT_SIZE_NAV_LINK }}
-              >
-                about
-              </a>
-            </li>
-          </ul>
+          {bp !== "mobile" && (
+            <ul className="flex gap-10 list-none m-0 p-0">
+              <li>
+                <a
+                  href="#services"
+                  className="font-fanwood font-normal text-text-primary no-underline hover:opacity-70"
+                  style={{ fontSize: navLinkSize }}
+                >
+                  services
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#contact"
+                  className="font-fanwood font-normal text-text-primary no-underline hover:opacity-70"
+                  style={{ fontSize: navLinkSize }}
+                >
+                  contact
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#experience"
+                  className="font-fanwood font-normal text-text-primary no-underline hover:opacity-70"
+                  style={{ fontSize: navLinkSize }}
+                >
+                  experience
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#about"
+                  className="font-fanwood font-normal text-text-primary no-underline hover:opacity-70"
+                  style={{ fontSize: navLinkSize }}
+                >
+                  about
+                </a>
+              </li>
+            </ul>
+          )}
         </nav>
         <Frame1 />
         <Frame2 />

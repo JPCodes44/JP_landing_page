@@ -7,6 +7,7 @@ import sliderImg from "../../styles/assets/2d/visuals/slider.png";
 import tasksImg from "../../styles/assets/2d/visuals/tasks.png";
 import temperatureImg from "../../styles/assets/2d/visuals/temperature.png";
 import workflowImg from "../../styles/assets/2d/visuals/workflow.png";
+import { useBreakpoint } from "../hooks/useBreakpoint";
 import {
   FONT_SIZE_BODY,
   FONT_SIZE_SECTION_H2,
@@ -44,10 +45,21 @@ const ICON_DURATION = 0.6;
 const ICON_EASE = "power3.out";
 
 const Frame2 = () => {
+  const bp = useBreakpoint();
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const paragraphRef = useRef<HTMLParagraphElement>(null);
   const iconRefs = useRef<(HTMLImageElement | null)[]>([]);
+
+  const isMobile = bp === "mobile";
+  const sectionPaddingX = isMobile ? "1.5rem" : SECTION_PADDING_X;
+  const h2Size = isMobile ? "6rem" : bp === "tablet" ? "10rem" : FONT_SIZE_SECTION_H2;
+  const bodySize = isMobile ? "1.4rem" : FONT_SIZE_BODY;
+  const iconSize = isMobile ? "7rem" : ICON_SIZE;
+  const iconColumns = isMobile ? "repeat(2, auto)" : "repeat(2, auto)";
+  const iconColGap = isMobile ? "2rem" : GRID_GAP_X_WIDE;
+  const descMarginLeft = isMobile ? "0" : FRAME2_DESC_MARGIN_LEFT;
+  const layoutDirection = isMobile ? "column" : "row";
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -131,31 +143,37 @@ const Frame2 = () => {
       style={{
         paddingTop: SECTION_PADDING_TOP_LG,
         paddingBottom: SECTION_PADDING_BOTTOM_LG,
-        paddingLeft: SECTION_PADDING_X,
-        paddingRight: SECTION_PADDING_X,
+        paddingLeft: sectionPaddingX,
+        paddingRight: sectionPaddingX,
       }}
     >
-      <div className="flex items-center" style={{ gap: FRAME2_GAP }}>
-        <div className="min-w-0 flex flex-col" style={{ flex: FRAME2_LEFT_FLEX }}>
+      <div
+        className="items-center"
+        style={{ display: "flex", flexDirection: layoutDirection, gap: FRAME2_GAP }}
+      >
+        <div
+          className="min-w-0 flex flex-col"
+          style={{ flex: isMobile ? "none" : FRAME2_LEFT_FLEX }}
+        >
           <h2
             ref={headingRef}
             className="font-fanwood font-normal text-text-primary m-0"
             style={{
-              fontSize: FONT_SIZE_SECTION_H2,
+              fontSize: h2Size,
               lineHeight: LINE_HEIGHT_HEADING,
               opacity: FRAME2_HEADING_INITIAL_OPACITY,
             }}
           >
             What I do:
           </h2>
-          <div style={{ marginLeft: FRAME2_DESC_MARGIN_LEFT }}>
+          <div style={{ marginLeft: descMarginLeft }}>
             <p
               ref={paragraphRef}
               className="font-fanwood font-normal text-text-primary mb-0"
               style={{
-                fontSize: FONT_SIZE_BODY,
+                fontSize: bodySize,
                 lineHeight: LINE_HEIGHT_BODY,
-                maxWidth: PARA_MAX_WIDTH,
+                maxWidth: isMobile ? "100%" : PARA_MAX_WIDTH,
                 marginTop: PARA_MARGIN_TOP_SM,
                 opacity: 0,
               }}
@@ -170,10 +188,10 @@ const Frame2 = () => {
         <div
           className="min-w-0 justify-center justify-items-center"
           style={{
-            flex: FRAME2_RIGHT_FLEX,
+            flex: isMobile ? "none" : FRAME2_RIGHT_FLEX,
             display: "grid",
-            gridTemplateColumns: "repeat(2, auto)",
-            columnGap: GRID_GAP_X_WIDE,
+            gridTemplateColumns: iconColumns,
+            columnGap: iconColGap,
             rowGap: GRID_GAP_Y,
           }}
         >
@@ -185,7 +203,7 @@ const Frame2 = () => {
               }}
               src={icon.src}
               alt={icon.alt}
-              style={{ width: "100%", maxWidth: ICON_SIZE, height: ICON_SIZE, opacity: 0 }}
+              style={{ width: "100%", maxWidth: iconSize, height: iconSize, opacity: 0 }}
               className="object-contain"
             />
           ))}

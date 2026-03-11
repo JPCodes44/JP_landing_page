@@ -1,3 +1,8 @@
+// Breakpoints (numeric px values for useBreakpoint hook)
+export const BREAKPOINT_MOBILE = 640;
+export const BREAKPOINT_TABLET = 1024;
+export const BREAKPOINT_DESKTOP = 1280;
+
 // Spacing / Layout
 export const NAVBAR_HEIGHT = "4.5rem";
 export const NAVBAR_PADDING_X = "3.75rem";

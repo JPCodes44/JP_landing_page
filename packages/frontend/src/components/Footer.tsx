@@ -1,3 +1,4 @@
+import { useBreakpoint } from "../hooks/useBreakpoint";
 import {
   FOOTER_CONTACT_LABEL_SIZE,
   FOOTER_CONTACT_PADDING_BOTTOM,
@@ -14,17 +15,31 @@ const contacts = [
 ];
 
 const Footer = () => {
+  const bp = useBreakpoint();
+  const isMobile = bp === "mobile";
+
+  const paddingX = isMobile ? "1.5rem" : FOOTER_CONTACT_PADDING_X;
+  const paddingTop = isMobile ? "5rem" : FOOTER_CONTACT_PADDING_TOP;
+  const paddingBottom = isMobile ? "4rem" : FOOTER_CONTACT_PADDING_BOTTOM;
+  const gap = isMobile ? "3rem" : "12rem";
+  const nameSize = isMobile ? "12vw" : FOOTER_NAME_SIZE;
+  const flexDirection = isMobile ? ("column" as const) : ("row" as const);
+  const labelSize = isMobile ? "1.4rem" : FOOTER_CONTACT_LABEL_SIZE;
+  const valueSize = isMobile ? "1.4rem" : FOOTER_CONTACT_VALUE_SIZE;
+
   return (
     <footer className="relative w-full bg-bg-warm overflow-x-visible overflow-y-hidden">
       {/* Contact info row */}
       <div
-        className="flex justify-center"
         style={{
-          paddingLeft: FOOTER_CONTACT_PADDING_X,
-          paddingRight: FOOTER_CONTACT_PADDING_X,
-          paddingTop: FOOTER_CONTACT_PADDING_TOP,
-          paddingBottom: FOOTER_CONTACT_PADDING_BOTTOM,
-          gap: "12rem",
+          display: "flex",
+          flexDirection,
+          justifyContent: isMobile ? "flex-start" : "center",
+          paddingLeft: paddingX,
+          paddingRight: paddingX,
+          paddingTop,
+          paddingBottom,
+          gap,
         }}
       >
         {contacts.map(({ label, value }) => (
@@ -32,7 +47,7 @@ const Footer = () => {
             <span
               className="text-text-primary"
               style={{
-                fontSize: FOOTER_CONTACT_LABEL_SIZE,
+                fontSize: labelSize,
                 fontFamily: "fanwood",
                 fontWeight: 400,
               }}
@@ -42,7 +57,7 @@ const Footer = () => {
             <span
               className="text-text-primary"
               style={{
-                fontSize: FOOTER_CONTACT_VALUE_SIZE,
+                fontSize: valueSize,
                 fontFamily: "fanwood",
                 fontWeight: 400,
               }}
@@ -57,7 +72,7 @@ const Footer = () => {
       <div
         className="w-full leading-none select-none text-center whitespace-nowrap"
         style={{
-          fontSize: FOOTER_NAME_SIZE,
+          fontSize: nameSize,
           fontFamily: "Helvetica, Arial, sans-serif",
           fontWeight: 500,
           color: "#1a1a1a",

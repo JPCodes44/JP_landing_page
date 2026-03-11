@@ -1,6 +1,7 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef } from "react";
+import { useBreakpoint } from "../hooks/useBreakpoint";
 import {
   FRAME5_CONTAINER_HEIGHT,
   FRAME5_FROST_BLUR_FINAL,
@@ -18,12 +19,19 @@ import {
 gsap.registerPlugin(ScrollTrigger);
 
 const Frame5 = () => {
+  const bp = useBreakpoint();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
   const headingLargeRef = useRef<HTMLHeadingElement>(null);
   const headingSmallRef = useRef<HTMLHeadingElement>(null);
   const frostRef = useRef<HTMLDivElement>(null);
   const rectRef = useRef<HTMLDivElement>(null);
+
+  const isMobile = bp === "mobile";
+  const headingInitialSize = isMobile ? "6rem" : FRAME5_HEADING_INITIAL_SIZE;
+  const headingFinalSize = isMobile ? "4rem" : FRAME5_HEADING_FINAL_SIZE;
+  const headingInitialTop = isMobile ? "30vh" : FRAME5_HEADING_INITIAL_TOP;
+  const headingLeft = isMobile ? "1.5rem" : "3.75rem";
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
@@ -127,10 +135,10 @@ const Frame5 = () => {
           ref={headingLargeRef}
           className="absolute font-fanwood text-text-primary"
           style={{
-            fontSize: FRAME5_HEADING_INITIAL_SIZE,
+            fontSize: headingInitialSize,
             opacity: FRAME5_HEADING_INITIAL_OPACITY,
-            top: FRAME5_HEADING_INITIAL_TOP,
-            left: "3.75rem",
+            top: headingInitialTop,
+            left: headingLeft,
             margin: 0,
             lineHeight: 1.1,
           }}
@@ -142,10 +150,10 @@ const Frame5 = () => {
           ref={headingSmallRef}
           className="absolute font-fanwood text-text-primary whitespace-nowrap"
           style={{
-            fontSize: FRAME5_HEADING_FINAL_SIZE,
+            fontSize: headingFinalSize,
             opacity: 0,
-            top: FRAME5_HEADING_INITIAL_TOP,
-            left: "3.75rem",
+            top: headingInitialTop,
+            left: headingLeft,
             margin: 0,
             lineHeight: 1.1,
           }}
