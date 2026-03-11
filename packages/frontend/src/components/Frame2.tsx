@@ -57,10 +57,10 @@ const Frame2 = () => {
   const h2Size = isMobile
     ? "6rem"
     : bp === "tablet"
-      ? "7rem"
+      ? "6rem"
       : `clamp(6rem, 17.5vw, ${FONT_SIZE_SECTION_H2})`;
   const bodySize = `clamp(1.4rem, 2.375vw, ${FONT_SIZE_BODY})`;
-  const iconSize = isMobile ? "7rem" : `clamp(7rem, 15.625vw, ${ICON_SIZE})`;
+  const iconSize = isMobile || bp === "tablet" ? "7rem" : `clamp(7rem, 15.625vw, ${ICON_SIZE})`;
   const iconColumns = "repeat(2, auto)";
   const iconColGap = isMobile ? "2rem" : GRID_GAP_X_WIDE;
   const descMarginLeft = isMobile ? "0" : FRAME2_DESC_MARGIN_LEFT;
