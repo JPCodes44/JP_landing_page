@@ -1,7 +1,6 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef } from "react";
-import scrubDemoSrc from "../../styles/assets/2d/videos/scrubDemo.mp4";
 import {
   COLOR_FRAME3_GREEN,
   COLOR_FRAME3_TAN,
@@ -13,20 +12,77 @@ import {
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Pixels of scroll per second of video during the linger phase.
+// Pixels of scroll per frame during the linger phase.
 // Higher = smoother scrub but taller section.
-const PX_PER_SECOND = 100;
+const PX_PER_FRAME = 3;
+
+// Load all frame URLs in sorted order at build time
+const frameModules = import.meta.glob("../../styles/assets/2d/videos/frame3Animation/*.png", {
+  eager: true,
+  query: "?url",
+  import: "default",
+}) as Record<string, string>;
+
+const FRAME_URLS: string[] = Object.keys(frameModules)
+  .sort()
+  .map((key) => frameModules[key]);
+
+const TOTAL_FRAMES = FRAME_URLS.length;
 
 const Frame3 = () => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const rectRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
     const rect = rectRef.current;
-    const video = videoRef.current;
-    if (!wrapper || !rect || !video) return;
+    const canvas = canvasRef.current;
+    if (!wrapper || !rect || !canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    // Pre-load all images
+    const images: HTMLImageElement[] = FRAME_URLS.map((url) => {
+      const img = new Image();
+      img.src = url;
+      return img;
+    });
+
+    let currentFrameIndex = -1;
+
+    const drawImageCover = (img: HTMLImageElement) => {
+      const cw = canvas.width;
+      const ch = canvas.height;
+      const iw = img.naturalWidth;
+      const ih = img.naturalHeight;
+      if (iw === 0 || ih === 0) return;
+      const scale = Math.max(cw / iw, ch / ih);
+      const x = (cw - iw * scale) / 2;
+      const y = (ch - ih * scale) / 2;
+      ctx.clearRect(0, 0, cw, ch);
+      ctx.drawImage(img, x, y, iw * scale, ih * scale);
+    };
+
+    const drawFrame = (index: number) => {
+      const clampedIndex = Math.max(0, Math.min(TOTAL_FRAMES - 1, index));
+      if (clampedIndex === currentFrameIndex) return;
+      currentFrameIndex = clampedIndex;
+
+      // Size canvas to container on first draw
+      if (canvas.width === 0 || canvas.height === 0) {
+        canvas.width = rect.offsetWidth;
+        canvas.height = rect.offsetHeight;
+      }
+
+      const img = images[clampedIndex];
+      if (img.complete && img.naturalWidth > 0) {
+        drawImageCover(img);
+      } else {
+        img.onload = () => drawImageCover(img);
+      }
+    };
 
     const prefersReducedMotion =
       typeof window.matchMedia === "function" &&
@@ -39,24 +95,24 @@ const Frame3 = () => {
         right: FRAME3_RECT_TARGET_INSET,
         backgroundColor: COLOR_FRAME3_GREEN,
       });
-      const setLastFrame = () => {
-        video.currentTime = video.duration;
-      };
-      if (video.readyState >= 1) {
-        setLastFrame();
-      } else {
-        video.addEventListener("loadedmetadata", setLastFrame, { once: true });
-      }
+      canvas.width = rect.offsetWidth;
+      canvas.height = rect.offsetHeight;
+      drawFrame(TOTAL_FRAMES - 1);
       return;
     }
+
+    // Draw first frame immediately
+    canvas.width = rect.offsetWidth;
+    canvas.height = rect.offsetHeight;
+    drawFrame(0);
 
     let tl: gsap.core.Timeline | undefined;
 
     const buildAnimation = () => {
-      // Expansion: 1 viewport-height of scroll (same feel regardless of video length)
+      // Expansion: 1 viewport-height of scroll (same feel regardless of frame count)
       const expansionPx = window.innerHeight;
-      // Linger: enough scroll to comfortably scrub the full video
-      const lingerPx = video.duration * PX_PER_SECOND;
+      // Linger: enough scroll to comfortably scrub all frames
+      const lingerPx = TOTAL_FRAMES * PX_PER_FRAME;
       // Total section height = sticky viewport + scroll distance
       wrapper.style.height = `${window.innerHeight + expansionPx + lingerPx}px`;
 
@@ -73,7 +129,7 @@ const Frame3 = () => {
           end: "bottom bottom",
           scrub: true,
           onUpdate: (self) => {
-            if (video.duration) video.currentTime = self.progress * video.duration;
+            drawFrame(Math.round(self.progress * (TOTAL_FRAMES - 1)));
           },
         },
       });
@@ -90,18 +146,13 @@ const Frame3 = () => {
         },
         0,
       )
-        // Linger: hold expanded state while video scrubs to the end
+        // Linger: hold expanded state while frames scrub to the end
         .to({}, { duration: lingerUnits });
     };
 
-    if (video.readyState >= 1) {
-      buildAnimation();
-    } else {
-      video.addEventListener("loadedmetadata", buildAnimation, { once: true });
-    }
+    buildAnimation();
 
     return () => {
-      video.removeEventListener("loadedmetadata", buildAnimation);
       tl?.scrollTrigger?.kill();
       tl?.kill();
     };
@@ -111,7 +162,7 @@ const Frame3 = () => {
     <section
       ref={wrapperRef}
       className="relative w-full bg-bg-warm"
-      // Height is set dynamically in the effect once video duration is known.
+      // Height is set dynamically in the effect once frame count is known.
       // 300vh is a reasonable fallback until then.
       style={{ height: "300vh" }}
     >
@@ -128,13 +179,10 @@ const Frame3 = () => {
             backgroundColor: COLOR_FRAME3_TAN,
           }}
         >
-          <video
-            ref={videoRef}
-            src={scrubDemoSrc}
-            className="absolute inset-0 w-full h-full object-cover"
-            muted
-            playsInline
-            preload="auto"
+          <canvas
+            ref={canvasRef}
+            className="absolute inset-0"
+            style={{ width: "100%", height: "100%" }}
           />
         </div>
       </div>

@@ -34,9 +34,9 @@ describe("Frame3", () => {
     expect(section).toBeInTheDocument();
   });
 
-  it("renders a video element", () => {
+  it("renders a canvas element", () => {
     render(<Frame3 />);
-    expect(document.querySelector("video")).toBeInTheDocument();
+    expect(document.querySelector("canvas")).toBeInTheDocument();
   });
 
   describe("with prefers-reduced-motion", () => {
@@ -48,7 +48,7 @@ describe("Frame3", () => {
       render(<Frame3 />);
       const section = document.querySelector("section");
       expect(section).toBeInTheDocument();
-      expect(document.querySelector("video")).toBeInTheDocument();
+      expect(document.querySelector("canvas")).toBeInTheDocument();
     });
   });
 });
