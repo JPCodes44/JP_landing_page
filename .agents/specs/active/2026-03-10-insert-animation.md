@@ -24,6 +24,7 @@ agent/insert-animation
 - packages/frontend/src/components/Frame3.test.tsx
 - packages/frontend/src/vite-env.d.ts
 - packages/frontend/styles/assets/2d/videos/scrubDemo.mp4
+- packages/frontend/styles/assets/2d/videos/frame3Animation/*.png
 - .agents/specs/active/2026-03-10-insert-animation.md
 - .agents/logs/runs/insert-animation.json
 

@@ -52,17 +52,11 @@ const Frame3 = () => {
 
     let currentFrameIndex = -1;
 
-    const drawImageCover = (img: HTMLImageElement) => {
-      const cw = canvas.width;
-      const ch = canvas.height;
-      const iw = img.naturalWidth;
-      const ih = img.naturalHeight;
-      if (iw === 0 || ih === 0) return;
-      const scale = Math.max(cw / iw, ch / ih);
-      const x = (cw - iw * scale) / 2;
-      const y = (ch - ih * scale) / 2;
-      ctx.clearRect(0, 0, cw, ch);
-      ctx.drawImage(img, x, y, iw * scale, ih * scale);
+    // Size the canvas to the image's natural resolution once, then just draw.
+    // The rect's overflow:hidden acts as the window into the image.
+    const initCanvas = (img: HTMLImageElement) => {
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
     };
 
     const drawFrame = (index: number) => {
@@ -70,17 +64,16 @@ const Frame3 = () => {
       if (clampedIndex === currentFrameIndex) return;
       currentFrameIndex = clampedIndex;
 
-      // Size canvas to container on first draw
-      if (canvas.width === 0 || canvas.height === 0) {
-        canvas.width = rect.offsetWidth;
-        canvas.height = rect.offsetHeight;
-      }
-
       const img = images[clampedIndex];
+      const draw = () => {
+        if (canvas.width !== img.naturalWidth) initCanvas(img);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0);
+      };
       if (img.complete && img.naturalWidth > 0) {
-        drawImageCover(img);
+        draw();
       } else {
-        img.onload = () => drawImageCover(img);
+        img.onload = draw;
       }
     };
 
@@ -95,15 +88,11 @@ const Frame3 = () => {
         right: FRAME3_RECT_TARGET_INSET,
         backgroundColor: COLOR_FRAME3_GREEN,
       });
-      canvas.width = rect.offsetWidth;
-      canvas.height = rect.offsetHeight;
       drawFrame(TOTAL_FRAMES - 1);
       return;
     }
 
     // Draw first frame immediately
-    canvas.width = rect.offsetWidth;
-    canvas.height = rect.offsetHeight;
     drawFrame(0);
 
     let tl: gsap.core.Timeline | undefined;
@@ -181,8 +170,8 @@ const Frame3 = () => {
         >
           <canvas
             ref={canvasRef}
-            className="absolute inset-0"
-            style={{ width: "100%", height: "100%" }}
+            className="absolute"
+            style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
           />
         </div>
       </div>
