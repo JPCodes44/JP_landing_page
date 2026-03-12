@@ -60,8 +60,9 @@ const Frame3 = () => {
       // Size canvas CSS to cover the expanded rect, preserving aspect ratio.
       // FRAME3_RECT_TARGET_INSET = "2%" → 2% each side → 96vw total width
       // FRAME3_RECT_TARGET_HEIGHT = "96vh"
-      const targetW = window.innerWidth * (1 - (2 * parseFloat(FRAME3_RECT_TARGET_INSET)) / 100);
-      const targetH = window.innerHeight * (parseFloat(FRAME3_RECT_TARGET_HEIGHT) / 100);
+      const targetW =
+        window.innerWidth * (1 - (2 * Number.parseFloat(FRAME3_RECT_TARGET_INSET)) / 100);
+      const targetH = window.innerHeight * (Number.parseFloat(FRAME3_RECT_TARGET_HEIGHT) / 100);
       const scale = Math.max(targetW / img.naturalWidth, targetH / img.naturalHeight);
       canvas.style.width = `${img.naturalWidth * scale}px`;
       canvas.style.height = `${img.naturalHeight * scale}px`;
