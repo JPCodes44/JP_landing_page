@@ -27,6 +27,7 @@ agent/insert-animation
 - packages/frontend/styles/assets/2d/videos/frame3Animation/*.png
 - .agents/specs/active/2026-03-10-insert-animation.md
 - .agents/logs/runs/insert-animation.json
+- .agents/logs/insert-animation-failure.md
 
 ## Forbidden files
 <!-- Files the agent must never touch regardless of what the task seems to require. -->
