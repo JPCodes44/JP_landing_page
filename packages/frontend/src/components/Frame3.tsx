@@ -1,28 +1,14 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef } from "react";
-import { useBreakpoint } from "../hooks/useBreakpoint";
-import {
-  COLOR_FRAME3_GREEN,
-  COLOR_FRAME3_TAN,
-  FONT_SIZE_LABEL,
-  FRAME3_CONTAINER_HEIGHT,
-  FRAME3_RECT_INITIAL_HEIGHT,
-  FRAME3_RECT_INITIAL_INSET,
-  FRAME3_RECT_TARGET_HEIGHT,
-  FRAME3_RECT_TARGET_INSET,
-} from "../theme";
+import * as t from "../theme";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Frame3 = () => {
-  const bp = useBreakpoint();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const rectRef = useRef<HTMLDivElement>(null);
   const labelRef = useRef<HTMLDivElement>(null);
-
-  const labelSize = bp === "mobile" ? "1.2rem" : FONT_SIZE_LABEL;
-  const rectInitialInset = bp === "mobile" ? "4%" : FRAME3_RECT_INITIAL_INSET;
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
@@ -36,10 +22,10 @@ const Frame3 = () => {
 
     if (prefersReducedMotion) {
       gsap.set(rect, {
-        height: FRAME3_RECT_TARGET_HEIGHT,
-        left: FRAME3_RECT_TARGET_INSET,
-        right: FRAME3_RECT_TARGET_INSET,
-        backgroundColor: COLOR_FRAME3_GREEN,
+        height: t.FRAME3_RECT_TARGET_HEIGHT,
+        left: t.FRAME3_RECT_TARGET_INSET,
+        right: t.FRAME3_RECT_TARGET_INSET,
+        backgroundColor: t.COLOR_FRAME3_GREEN,
       });
       gsap.set(label, { opacity: 1 });
       return;
@@ -54,20 +40,26 @@ const Frame3 = () => {
       },
     });
 
-    tl.to(
+    const cs = getComputedStyle(rect);
+    tl.fromTo(
       rect,
       {
-        height: FRAME3_RECT_TARGET_HEIGHT,
-        left: FRAME3_RECT_TARGET_INSET,
-        right: FRAME3_RECT_TARGET_INSET,
-        backgroundColor: COLOR_FRAME3_GREEN,
+        height: cs.height,
+        left: cs.left,
+        right: cs.right,
+        backgroundColor: cs.backgroundColor,
+      },
+      {
+        height: t.FRAME3_RECT_TARGET_HEIGHT,
+        left: t.FRAME3_RECT_TARGET_INSET,
+        right: t.FRAME3_RECT_TARGET_INSET,
+        backgroundColor: t.COLOR_FRAME3_GREEN,
         ease: "none",
         duration: 1,
       },
       0,
     )
       .fromTo(label, { opacity: 0 }, { opacity: 1, ease: "none", duration: 0.2 }, 0.8)
-      // Linger: hold final state while user continues scrolling
       .to({}, { duration: 2 });
 
     return () => {
@@ -79,26 +71,48 @@ const Frame3 = () => {
   return (
     <section
       ref={wrapperRef}
-      className="relative w-full bg-bg-warm"
-      style={{ height: FRAME3_CONTAINER_HEIGHT }}
+      style={{
+        position: "relative",
+        width: "100%",
+        backgroundColor: "#f5f3ef",
+        height: "var(--f3-container-height)",
+      }}
     >
-      <div className="sticky top-0 h-screen w-full">
+      <div
+        style={{
+          position: "sticky",
+          top: 0,
+          height: "100vh",
+          width: "100%",
+        }}
+      >
         <div
           ref={rectRef}
-          className="absolute rounded-2xl border border-border-warm overflow-hidden"
           style={{
+            position: "absolute",
+            borderRadius: "1rem",
+            border: "1px solid #d4d0c8",
+            overflow: "hidden",
             top: "50%",
             transform: "translateY(-50%)",
-            left: rectInitialInset,
-            right: rectInitialInset,
-            height: FRAME3_RECT_INITIAL_HEIGHT,
-            backgroundColor: COLOR_FRAME3_TAN,
+            left: "var(--f3-rect-initial-inset)",
+            right: "var(--f3-rect-initial-inset)",
+            height: "var(--f3-rect-initial-height)",
+            backgroundColor: "var(--f3-rect-initial-bg)",
           }}
         >
           <div
             ref={labelRef}
-            className="flex items-center justify-center h-full font-fanwood text-text-primary"
-            style={{ opacity: 0, fontSize: labelSize }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              height: "100%",
+              fontFamily: '"Fanwood Text", serif',
+              color: "#2d2d2d",
+              opacity: 0,
+              fontSize: "var(--f3-label-size)",
+            }}
           >
             SOME COOL VISUAL WOAW
           </div>

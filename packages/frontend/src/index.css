@@ -8,3 +8,271 @@
   --color-accent-green: #7a8b5c;
   --color-border-warm: #d4d0c8;
 }
+
+/* ═══════════════════════════════════════
+   CSS Custom Properties — Mobile-first
+   Breakpoints: 640px (tablet), 1024px (desktop)
+   ═══════════════════════════════════════ */
+
+:root {
+  /* ─── Nav ─── */
+  --nav-height: 4.5rem;
+  --nav-px: 1.5rem;
+  --nav-logo-size: 1.1rem;
+  --nav-link-size: 1rem;
+  --nav-backdrop: blur(8px) saturate(1.58);
+  --nav-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.06);
+  --nav-border: 1px solid rgba(0, 0, 0, 0.06);
+
+  /* ─── Frame1 — Hero ─── */
+  --f1-hero-width: 90vw;
+  --f1-hero-max-width: 90vw;
+  --f1-h1-size: clamp(2.8rem, 6.7vw, 5.375rem);
+  --f1-body-size: clamp(1.4rem, 2.375vw, 1.9rem);
+  --f1-para-mt: 3rem;
+
+  /* ─── Frame2 — What I Do ─── */
+  --f2-section-px: 1.5rem;
+  --f2-section-pt: 8rem;
+  --f2-section-pb: 6rem;
+  --f2-h2-size: 6rem;
+  --f2-body-size: clamp(1.4rem, 2.375vw, 1.9rem);
+  --f2-layout-direction: column;
+  --f2-gap: 4rem;
+  --f2-left-flex: none;
+  --f2-right-flex: none;
+  --f2-icon-size: 7rem;
+  --f2-icon-columns: repeat(2, auto);
+  --f2-icon-col-gap: 2rem;
+  --f2-icon-row-gap: 3rem;
+  --f2-desc-ml: 0;
+  --f2-para-max-width: 100%;
+  --f2-para-mt: 2rem;
+
+  /* ─── Frame3 — Visual Expand ─── */
+  --f3-container-height: 300vh;
+  --f3-label-size: 1.2rem;
+  --f3-rect-initial-inset: 4%;
+  --f3-rect-initial-height: 48vh;
+  --f3-rect-initial-bg: #dedad5;
+
+  /* ─── Frame4 — Accordion ─── */
+  --f4-section-px: 1.5rem;
+  --f4-section-pt: 24vh;
+  --f4-section-pb: 8vh;
+  --f4-h2-size: 4rem;
+  --f4-accordion-mt: 4rem;
+  --f4-accordion-mx: 0;
+  --f4-accordion-px: 1.5rem;
+  --f4-item-size: 1.8rem;
+  --f4-item-py: 1.7rem;
+  --f4-item-pl: 1rem;
+  --f4-item-pr: 1rem;
+  --f4-content-pl: 0;
+  --f4-content-size: 1.4rem;
+  --f4-content-py: 2rem;
+  --f4-button-size: 1.6rem;
+  --f4-line-thickness: 0.1rem;
+
+  /* ─── Frame5 — Services Video ─── */
+  --f5-container-height: 300vh;
+  --f5-heading-initial-size: 6rem;
+  --f5-heading-final-size: 4rem;
+  --f5-heading-initial-top: 30vh;
+  --f5-heading-left: 1.5rem;
+  --f5-rect-initial-top: calc(35vh + 7rem);
+  --f5-rect-initial-inset: 10%;
+  --f5-rect-initial-height: 30vh;
+  --f5-rect-bg: #d0ccc8;
+
+  /* ─── Frame6 — Contact ─── */
+  --f6-section-pt: 8rem;
+  --f6-section-px: 1.5rem;
+  --f6-section-pb: 6rem;
+  --f6-cta-size: 3rem;
+  --f6-cta-max-width: 90vw;
+  --f6-form-width: 100%;
+  --f6-arrow-size: 3.5rem;
+  --f6-arrow-icon-size: 1.2rem;
+  --f6-arrow-pt: 10rem;
+  --f6-form-padding: 1.5rem;
+  --f6-title-size: 2.2rem;
+  --f6-title-mb: 1.25rem;
+  --f6-title-letter-spacing: 0.05em;
+  --f6-fields-gap: 1.25rem;
+  --f6-fields-pt: 2rem;
+  --f6-name-direction: column;
+  --f6-name-row-gap: 1.5rem;
+  --f6-label-gap: 0.5rem;
+  --f6-first-name-flex: 0 0 100%;
+  --f6-last-name-flex: 0 0 100%;
+  --f6-email-width: 100%;
+  --f6-comments-width: 100%;
+  --f6-label-size: 1.2rem;
+  --f6-input-size: 1.1rem;
+  --f6-input-padding: 0.75rem 1rem;
+  --f6-input-bg: #ffffff;
+  --f6-textarea-height: 14rem;
+  --f6-shadow: 3px 3px 0px rgba(0, 0, 0, 0.15);
+  --f6-submit-size: 1.3rem;
+  --f6-submit-padding: 0.6rem 2rem;
+  --f6-submit-pt: 1.5rem;
+
+  /* ─── Footer ─── */
+  --footer-px: 1.5rem;
+  --footer-pt: 1rem;
+  --footer-pb: 4rem;
+  --footer-gap: 6rem;
+  --footer-name-size: 20vw;
+  --footer-label-size: 0.85rem;
+  --footer-value-size: 0.85rem;
+  --footer-contact-gap: 0.75rem;
+  --footer-stack-gap: 2rem;
+  --footer-name-color: #1a1a1a;
+  --footer-name-font: Helvetica, Arial, sans-serif;
+  --footer-name-line-height: 0.85;
+  --footer-name-mb: 0;
+
+  /* ─── HamburgerMenu ─── */
+  --hamburger-link-padding: 1.25rem 1.5rem;
+  --hamburger-btn-gap: 0.38rem;
+  --hamburger-btn-size: 2rem;
+  --hamburger-line-height: 0.1rem;
+  --hamburger-line-width: 1.5rem;
+
+  /* ─── Shared ─── */
+  --line-height-heading: 1.1;
+  --line-height-body: 1.6;
+}
+
+/* ─── Tablet: 640px+ ─── */
+@media (min-width: 640px) {
+  :root {
+    /* Nav */
+    --nav-px: 3.75rem;
+    --nav-logo-size: 1.375rem;
+    --nav-link-size: 1.3rem;
+
+    /* Frame1 */
+    --f1-hero-width: 55vw;
+    --f1-hero-max-width: 40vw;
+
+    /* Frame2 */
+    --f2-section-px: 3.75rem;
+    --f2-layout-direction: row;
+    --f2-left-flex: 55%;
+    --f2-right-flex: 45%;
+    --f2-icon-col-gap: 7rem;
+    --f2-icon-row-gap: 1rem;
+    --f2-desc-ml: 4.5rem;
+    --f2-para-max-width: 40.75rem;
+
+    /* Frame3 */
+    --f3-label-size: 2rem;
+    --f3-rect-initial-inset: 10%;
+
+    /* Frame4 */
+    --f4-section-px: 3.75rem;
+    --f4-h2-size: clamp(4rem, 10vw, 8rem);
+    --f4-accordion-mt: 12rem;
+    --f4-accordion-mx: 2rem;
+    --f4-item-size: clamp(1.8rem, 4.375vw, 3.5rem);
+    --f4-item-py: 2.2rem;
+    --f4-item-pl: 4rem;
+    --f4-item-pr: 4.5rem;
+    --f4-content-pl: 4.5rem;
+    --f4-content-size: 1.9rem;
+
+    /* Frame5 */
+    --f5-heading-initial-size: clamp(6rem, 16.25vw, 13rem);
+    --f5-heading-final-size: clamp(4rem, 10vw, 8rem);
+    --f5-heading-initial-top: 38vh;
+    --f5-heading-left: 3.75rem;
+
+    /* Frame6 */
+    --f6-section-pt: 20rem;
+    --f6-section-px: 2.5rem;
+    --f6-cta-size: 4rem;
+    --f6-cta-max-width: 80vw;
+    --f6-form-width: calc(100% - 4rem * 2);
+    --f6-form-padding: 3rem;
+    --f6-title-size: 2.6rem;
+    --f6-title-mb: 2rem;
+    --f6-fields-pt: 3rem;
+    --f6-name-direction: row;
+    --f6-first-name-flex: 0 0 48%;
+    --f6-last-name-flex: 0 0 40%;
+    --f6-email-width: 65%;
+    --f6-comments-width: 95%;
+    --f6-label-size: 1.35rem;
+    --f6-input-size: 1.25rem;
+    --f6-input-padding: 0.85rem 1.1rem;
+    --f6-textarea-height: 16rem;
+    --f6-shadow: 4px 4px 0px rgba(0, 0, 0, 0.15);
+    --f6-submit-size: 1.45rem;
+    --f6-submit-padding: 0.7rem 2.5rem;
+    --f6-submit-pt: 2rem;
+
+    /* Footer */
+    --footer-px: 16rem;
+    --footer-pt: 6rem;
+    --footer-pb: 10rem;
+    --footer-gap: 4rem;
+    --footer-name-size: 20vw;
+    --footer-label-size: 1.8rem;
+    --footer-value-size: 1.8rem;
+    --footer-name-mb: -0.25em;
+  }
+}
+
+/* ─── Desktop: 1024px+ ─── */
+@media (min-width: 1024px) {
+  :root {
+    /* Frame2 */
+    --f2-h2-size: clamp(6rem, 17.5vw, 14rem);
+    --f2-icon-size: clamp(7rem, 15.625vw, 12.5rem);
+    --f2-icon-row-gap: 3rem;
+
+    /* Frame6 */
+    --f6-section-pt: 50rem;
+    --f6-section-px: 3.75rem;
+    --f6-cta-size: clamp(3rem, 7.5vw, 6rem);
+    --f6-cta-max-width: 55vw;
+    --f6-form-width: calc(100% - 10rem * 2);
+    --f6-form-padding: 6rem;
+    --f6-title-size: 3rem;
+    --f6-fields-pt: 5rem;
+    --f6-first-name-flex: 0 0 46%;
+    --f6-last-name-flex: 0 0 38%;
+    --f6-email-width: 55%;
+    --f6-comments-width: 90%;
+    --f6-label-size: 1.5rem;
+    --f6-input-size: 1.4rem;
+    --f6-input-padding: 1rem 1.25rem;
+    --f6-textarea-height: 20rem;
+    --f6-submit-size: 1.6rem;
+    --f6-submit-padding: 0.75rem 3rem;
+    --f6-submit-pt: 3rem;
+
+    /* Footer */
+    --footer-pt: 14rem;
+    --footer-gap: 12rem;
+  }
+}
+
+/* Footer grid: mobile 2-col (location+email stacked, phone right), tablet+ 3-col flat row */
+.footer-contacts {
+  grid-template-columns: 1fr 1fr;
+}
+.footer-contacts > :nth-child(3) {
+  justify-self: end;
+}
+@media (min-width: 640px) {
+  .footer-contacts {
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-items: center;
+  }
+  .footer-contacts > :nth-child(3) {
+    justify-self: auto;
+  }
+}

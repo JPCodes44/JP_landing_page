@@ -1,98 +1,121 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef, useState } from "react";
-import { type Breakpoint, useBreakpoint } from "../hooks/useBreakpoint";
-import {
-  FONT_SIZE_CTA,
-  FONT_SIZE_CTA_MAX_WIDTH,
-  FONT_SIZE_FORM_INPUT,
-  FONT_SIZE_FORM_LABEL,
-  FONT_SIZE_FORM_SUBMIT,
-  FONT_SIZE_FORM_TITLE,
-  FRAME6_ARROW_BOB_DURATION,
-  FRAME6_ARROW_BOB_Y,
-  FRAME6_ARROW_SIZE,
-  FRAME6_FORM_INNER_PADDING,
-  FRAME6_FORM_PADDING_X,
-  FRAME6_HEADING_INITIAL_OPACITY,
-  LINE_HEIGHT_HEADING,
-  SECTION_PADDING_BOTTOM_LG,
-  SECTION_PADDING_X,
-} from "../theme";
+import { useBreakpoint } from "../hooks/useBreakpoint";
+import * as t from "../theme";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const ContactForm = ({ bp }: { bp: Breakpoint }) => {
+const ContactForm = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [comments, setComments] = useState("");
 
-  const isMobile = bp === "mobile";
-  const formPadding = isMobile ? "2rem" : bp === "tablet" ? "3rem" : FRAME6_FORM_INNER_PADDING;
-  const firstNameFlex = isMobile ? "0 0 100%" : "0 0 46%";
-  const lastNameFlex = isMobile ? "0 0 100%" : "0 0 38%";
-  const emailWidth = isMobile ? "100%" : "55%";
-  const nameRowDirection = isMobile ? "column" : "row";
+  const inputStyle: React.CSSProperties = {
+    fontFamily: '"Fanwood Text", serif',
+    color: "#2d2d2d",
+    backgroundColor: "#f5f3ef",
+    border: "1px solid #d4d0c8",
+    width: "100%",
+    outline: "none",
+  };
 
-  const inputClass =
-    "font-fanwood text-text-primary bg-bg-warm border border-border-warm w-full outline-none";
-  const labelClass = "font-fanwood text-text-primary";
-  const shadowStyle = { boxShadow: "4px 4px 0px rgba(0,0,0,0.15)" };
-  const fieldStyle = { fontSize: FONT_SIZE_FORM_INPUT, padding: "0.6rem 0.75rem", ...shadowStyle };
-  const labelStyle = { fontSize: FONT_SIZE_FORM_LABEL, fontFamily: "satoshi" };
-  const gapStyle = { gap: "0.5rem" };
+  const labelStyle: React.CSSProperties = {
+    fontFamily: '"Fanwood Text", serif',
+    color: "#2d2d2d",
+  };
 
   return (
-    <div style={{ padding: formPadding }}>
+    <div style={{ padding: "var(--f6-form-padding)" }}>
       <h3
-        className="font-fanwood text-text-primary uppercase m-0"
         style={{
-          fontSize: FONT_SIZE_FORM_TITLE,
-          marginBottom: "2rem",
-          letterSpacing: "0.05em",
           fontFamily: "satoshi",
+          color: "#2d2d2d",
+          textTransform: "uppercase",
+          margin: 0,
+          fontSize: "var(--f6-title-size)",
+          marginBottom: "var(--f6-title-mb)",
+          letterSpacing: "var(--f6-title-letter-spacing)",
         }}
       >
         Contact Me.
       </h3>
 
       <div
-        className="flex flex-col"
-        style={{ gap: "1.25rem", paddingTop: isMobile ? "2rem" : "5rem" }}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "var(--f6-fields-gap)",
+          paddingTop: "var(--f6-fields-pt)",
+        }}
       >
         {/* First + Last Name */}
-        <div style={{ display: "flex", flexDirection: nameRowDirection, gap: "1.5rem" }}>
-          <div className="flex flex-col" style={{ ...gapStyle, flex: firstNameFlex }}>
-            <label htmlFor="firstName" className={labelClass} style={labelStyle}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "var(--f6-name-direction)" as React.CSSProperties["flexDirection"],
+            gap: "var(--f6-name-row-gap)",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "var(--f6-label-gap)",
+              flex: "var(--f6-first-name-flex)",
+            }}
+          >
+            <label
+              htmlFor="firstName"
+              style={{
+                ...labelStyle,
+                fontSize: "var(--f6-label-size)",
+                fontFamily: "satoshi",
+              }}
+            >
               First Name
             </label>
             <input
               id="firstName"
-              className={inputClass}
               style={{
-                ...fieldStyle,
-                backgroundColor: "#ffffff",
-                padding: "1rem 1.25rem",
-                fontSize: "1.4rem",
+                ...inputStyle,
+                fontSize: "var(--f6-input-size)",
+                padding: "var(--f6-input-padding)",
+                boxShadow: "var(--f6-shadow)",
+                backgroundColor: "var(--f6-input-bg)",
               }}
               placeholder="Your first name here.."
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
             />
           </div>
-          <div className="flex flex-col" style={{ ...gapStyle, flex: lastNameFlex }}>
-            <label htmlFor="lastName" className={labelClass} style={labelStyle}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "var(--f6-label-gap)",
+              flex: "var(--f6-last-name-flex)",
+            }}
+          >
+            <label
+              htmlFor="lastName"
+              style={{
+                ...labelStyle,
+                fontSize: "var(--f6-label-size)",
+                fontFamily: "satoshi",
+              }}
+            >
               Last Name
             </label>
             <input
               id="lastName"
-              className={inputClass}
               style={{
-                ...fieldStyle,
-                backgroundColor: "#ffffff",
-                padding: "1rem 1.25rem",
-                fontSize: "1.4rem",
+                ...inputStyle,
+                fontSize: "var(--f6-input-size)",
+                padding: "var(--f6-input-padding)",
+                boxShadow: "var(--f6-shadow)",
+                backgroundColor: "var(--f6-input-bg)",
               }}
               placeholder="Your last name here.."
               value={lastName}
@@ -102,19 +125,33 @@ const ContactForm = ({ bp }: { bp: Breakpoint }) => {
         </div>
 
         {/* Email */}
-        <div className="flex flex-col" style={{ ...gapStyle, width: emailWidth }}>
-          <label htmlFor="email" className={labelClass} style={labelStyle}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "var(--f6-label-gap)",
+            width: "var(--f6-email-width)",
+          }}
+        >
+          <label
+            htmlFor="email"
+            style={{
+              ...labelStyle,
+              fontSize: "var(--f6-label-size)",
+              fontFamily: "satoshi",
+            }}
+          >
             Email
           </label>
           <input
             id="email"
             type="email"
-            className={inputClass}
             style={{
-              ...fieldStyle,
-              backgroundColor: "#ffffff",
-              padding: "1rem 1.25rem",
-              fontSize: "1.4rem",
+              ...inputStyle,
+              fontSize: "var(--f6-input-size)",
+              padding: "var(--f6-input-padding)",
+              boxShadow: "var(--f6-shadow)",
+              backgroundColor: "var(--f6-input-bg)",
             }}
             placeholder="Your email here.."
             value={email}
@@ -122,20 +159,35 @@ const ContactForm = ({ bp }: { bp: Breakpoint }) => {
           />
         </div>
 
-        {/* Comments — slightly narrower than submit row */}
-        <div className="flex flex-col" style={{ ...gapStyle, width: isMobile ? "100%" : "90%" }}>
-          <label htmlFor="comments" className={labelClass} style={labelStyle}>
+        {/* Comments */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "var(--f6-label-gap)",
+            width: "var(--f6-comments-width)",
+          }}
+        >
+          <label
+            htmlFor="comments"
+            style={{
+              ...labelStyle,
+              fontSize: "var(--f6-label-size)",
+              fontFamily: "satoshi",
+            }}
+          >
             Comments
           </label>
           <textarea
             id="comments"
-            className={`${inputClass} resize-none`}
             style={{
-              ...fieldStyle,
-              backgroundColor: "#ffffff",
-              padding: "1rem 1.25rem",
-              fontSize: "1.4rem",
-              height: "20rem",
+              ...inputStyle,
+              resize: "none",
+              fontSize: "var(--f6-input-size)",
+              padding: "var(--f6-input-padding)",
+              boxShadow: "var(--f6-shadow)",
+              backgroundColor: "var(--f6-input-bg)",
+              height: "var(--f6-textarea-height)",
             }}
             placeholder="Your comments here.."
             value={comments}
@@ -144,15 +196,24 @@ const ContactForm = ({ bp }: { bp: Breakpoint }) => {
         </div>
 
         {/* Submit */}
-        <div className="flex justify-end" style={{ paddingTop: "3rem" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            paddingTop: "var(--f6-submit-pt)",
+          }}
+        >
           <button
             type="button"
-            className="font-fanwood text-text-primary border border-text-primary bg-transparent cursor-pointer"
             style={{
-              fontSize: "1.6rem",
-              padding: "0.75rem 3rem",
               fontFamily: "satoshi",
-              boxShadow: "4px 4px 0px rgba(0,0,0,0.15)",
+              color: "#2d2d2d",
+              border: "1px solid #2d2d2d",
+              backgroundColor: "transparent",
+              cursor: "pointer",
+              fontSize: "var(--f6-submit-size)",
+              padding: "var(--f6-submit-padding)",
+              boxShadow: "var(--f6-shadow)",
             }}
           >
             Submit
@@ -163,25 +224,25 @@ const ContactForm = ({ bp }: { bp: Breakpoint }) => {
   );
 };
 
-// Suppress unused import warning — FONT_SIZE_FORM_SUBMIT is exported from theme for future use
-void FONT_SIZE_FORM_SUBMIT;
-
 const Frame6 = () => {
   const bp = useBreakpoint();
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const arrowRef = useRef<HTMLDivElement>(null);
 
+  // SVG attributes can't use CSS vars — keep breakpoint logic for these only
   const isMobile = bp === "mobile";
-  const ctaFontSize = isMobile ? "3rem" : `clamp(3rem, 7.5vw, ${FONT_SIZE_CTA})`;
-  const ctaMaxWidth = isMobile ? "90vw" : FONT_SIZE_CTA_MAX_WIDTH;
-  const sectionPaddingX = isMobile ? "1.5rem" : SECTION_PADDING_X;
-  const formWidth = isMobile
-    ? "100%"
-    : bp === "tablet"
-      ? "calc(100% - 4rem * 2)"
-      : `calc(100% - ${FRAME6_FORM_PADDING_X} * 2)`;
-  const sectionPaddingTop = isMobile ? "8rem" : "50rem";
+  const isTablet = bp === "tablet";
+  const borderWidth = isMobile
+    ? t.FRAME6_BORDER_WIDTH_MOBILE
+    : isTablet
+      ? t.FRAME6_BORDER_WIDTH_TABLET
+      : t.FRAME6_BORDER_WIDTH_DESKTOP;
+  const borderDash = isMobile
+    ? t.FRAME6_BORDER_DASH_MOBILE
+    : isTablet
+      ? t.FRAME6_BORDER_DASH_TABLET
+      : t.FRAME6_BORDER_DASH_DESKTOP;
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -190,8 +251,8 @@ const Frame6 = () => {
     if (!section || !heading || !arrow) return;
 
     const bobTween = gsap.to(arrow, {
-      y: FRAME6_ARROW_BOB_Y,
-      duration: FRAME6_ARROW_BOB_DURATION,
+      y: t.FRAME6_ARROW_BOB_Y,
+      duration: t.FRAME6_ARROW_BOB_DURATION,
       repeat: -1,
       yoyo: true,
       ease: "sine.inOut",
@@ -219,7 +280,7 @@ const Frame6 = () => {
 
     tl.fromTo(
       [heading, arrow],
-      { opacity: FRAME6_HEADING_INITIAL_OPACITY },
+      { opacity: t.FRAME6_HEADING_INITIAL_OPACITY },
       { opacity: 1, ease: "power2.out", duration: 1 },
       0,
     );
@@ -234,24 +295,42 @@ const Frame6 = () => {
   return (
     <section
       ref={sectionRef}
-      className="min-h-screen w-full bg-bg-warm flex flex-col items-center"
       style={{
-        paddingTop: sectionPaddingTop,
-        paddingBottom: SECTION_PADDING_BOTTOM_LG,
-        paddingLeft: sectionPaddingX,
-        paddingRight: sectionPaddingX,
+        minHeight: "100vh",
+        width: "100%",
+        backgroundColor: "#f5f3ef",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        paddingTop: "var(--f6-section-pt)",
+        paddingBottom: "var(--f6-section-pb)",
+        paddingLeft: "var(--f6-section-px)",
+        paddingRight: "var(--f6-section-px)",
       }}
     >
       {/* CTA heading */}
-      <div className="flex flex-col items-center flex-1 justify-center w-full">
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          flex: 1,
+          justifyContent: "center",
+          width: "100%",
+        }}
+      >
         <h2
           ref={headingRef}
-          className="font-fanwood font-normal text-text-primary text-center m-0"
           style={{
-            fontSize: ctaFontSize,
-            lineHeight: LINE_HEIGHT_HEADING,
-            opacity: FRAME6_HEADING_INITIAL_OPACITY,
-            maxWidth: ctaMaxWidth,
+            fontFamily: '"Fanwood Text", serif',
+            fontWeight: 400,
+            color: "#2d2d2d",
+            textAlign: "center",
+            margin: 0,
+            fontSize: "var(--f6-cta-size)",
+            lineHeight: "var(--line-height-heading)",
+            opacity: t.FRAME6_HEADING_INITIAL_OPACITY,
+            maxWidth: "var(--f6-cta-max-width)",
           }}
         >
           Ready to stop working for your business and let it work for you?
@@ -260,28 +339,40 @@ const Frame6 = () => {
 
       {/* Arrow centered on the top border of the form rect */}
       <div
-        className="relative w-full flex justify-center"
-        style={{ marginBottom: `calc(-${FRAME6_ARROW_SIZE} / 2)`, zIndex: 1, paddingTop: "10rem" }}
+        style={{
+          position: "relative",
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          marginBottom: "calc(-1 * var(--f6-arrow-size) / 2)",
+          zIndex: 1,
+          paddingTop: "var(--f6-arrow-pt)",
+        }}
       >
         <div
           ref={arrowRef}
-          className="flex items-center justify-center rounded-full border border-text-primary bg-bg-warm"
           style={{
-            width: FRAME6_ARROW_SIZE,
-            height: FRAME6_ARROW_SIZE,
-            opacity: FRAME6_HEADING_INITIAL_OPACITY,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: "9999px",
+            border: "1px solid #2d2d2d",
+            backgroundColor: "#f5f3ef",
+            width: "var(--f6-arrow-size)",
+            height: "var(--f6-arrow-size)",
+            opacity: t.FRAME6_HEADING_INITIAL_OPACITY,
           }}
         >
           <svg
-            width="1.2rem"
-            height="1.2rem"
+            width="var(--f6-arrow-icon-size)"
+            height="var(--f6-arrow-icon-size)"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="text-text-primary"
+            style={{ color: "#2d2d2d" }}
           >
             <title>Scroll down arrow</title>
             <line x1="12" y1="5" x2="12" y2="19" />
@@ -291,11 +382,28 @@ const Frame6 = () => {
       </div>
 
       {/* Form with dashed SVG border overlay */}
-      <div className="relative bg-white" style={{ width: formWidth }}>
+      <div
+        style={{
+          position: "relative",
+          backgroundColor: "#ffffff",
+          width: "var(--f6-form-width)",
+        }}
+      >
         {/* Dashed border — sits on top, pointer-events off */}
         <svg
-          className="absolute inset-0 text-text-primary pointer-events-none"
-          style={{ width: "100%", height: "100%", display: "block", overflow: "visible" }}
+          style={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            color: "#2d2d2d",
+            pointerEvents: "none",
+            width: "100%",
+            height: "100%",
+            display: "block",
+            overflow: "visible",
+          }}
         >
           <title>Form border</title>
           <rect
@@ -305,14 +413,14 @@ const Frame6 = () => {
             height="100%"
             fill="none"
             stroke="currentColor"
-            strokeWidth="3"
+            strokeWidth={borderWidth}
             pathLength="400"
-            strokeDasharray="3 1"
-            strokeDashoffset="1.5"
+            strokeDasharray={borderDash}
+            strokeDashoffset={t.FRAME6_BORDER_DASH_OFFSET}
           />
         </svg>
 
-        <ContactForm bp={bp} />
+        <ContactForm />
       </div>
     </section>
   );

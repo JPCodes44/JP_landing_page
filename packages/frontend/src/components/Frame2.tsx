@@ -7,26 +7,7 @@ import sliderImg from "../../styles/assets/2d/visuals/slider.png";
 import tasksImg from "../../styles/assets/2d/visuals/tasks.png";
 import temperatureImg from "../../styles/assets/2d/visuals/temperature.png";
 import workflowImg from "../../styles/assets/2d/visuals/workflow.png";
-import { useBreakpoint } from "../hooks/useBreakpoint";
-import {
-  FONT_SIZE_BODY,
-  FONT_SIZE_SECTION_H2,
-  FRAME2_DESC_MARGIN_LEFT,
-  FRAME2_GAP,
-  FRAME2_HEADING_INITIAL_OPACITY,
-  FRAME2_LEFT_FLEX,
-  FRAME2_RIGHT_FLEX,
-  GRID_GAP_X_WIDE,
-  GRID_GAP_Y,
-  ICON_SIZE,
-  LINE_HEIGHT_BODY,
-  LINE_HEIGHT_HEADING,
-  PARA_MARGIN_TOP_SM,
-  PARA_MAX_WIDTH,
-  SECTION_PADDING_BOTTOM_LG,
-  SECTION_PADDING_TOP_LG,
-  SECTION_PADDING_X,
-} from "../theme";
+import * as t from "../theme";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -45,26 +26,10 @@ const ICON_DURATION = 0.6;
 const ICON_EASE = "power3.out";
 
 const Frame2 = () => {
-  const bp = useBreakpoint();
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const paragraphRef = useRef<HTMLParagraphElement>(null);
   const iconRefs = useRef<(HTMLImageElement | null)[]>([]);
-
-  const isMobile = bp === "mobile";
-  const sectionPaddingX = isMobile ? "1.5rem" : SECTION_PADDING_X;
-  // clamp: scales proportionally with viewport; desktop size / 80rem * 100 = vw value
-  const h2Size = isMobile
-    ? "6rem"
-    : bp === "tablet"
-      ? "6rem"
-      : `clamp(6rem, 17.5vw, ${FONT_SIZE_SECTION_H2})`;
-  const bodySize = bp === "tablet" ? "1.2rem" : `clamp(1.4rem, 2.375vw, ${FONT_SIZE_BODY})`;
-  const iconSize = isMobile || bp === "tablet" ? "7rem" : `clamp(7rem, 15.625vw, ${ICON_SIZE})`;
-  const iconColumns = "repeat(2, auto)";
-  const iconColGap = isMobile ? "2rem" : GRID_GAP_X_WIDE;
-  const descMarginLeft = isMobile ? "0" : FRAME2_DESC_MARGIN_LEFT;
-  const layoutDirection = isMobile ? "column" : "row";
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -86,8 +51,6 @@ const Frame2 = () => {
       return;
     }
 
-    // Create scrubbed animation timeline for Frame2
-    // Start animation very early in scroll
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: section,
@@ -99,7 +62,6 @@ const Frame2 = () => {
 
     const rotations = [66, -66, 66, -66, 66, -66];
 
-    // Icons first (position 0)
     tl.fromTo(
       iconEls,
       {
@@ -119,10 +81,9 @@ const Frame2 = () => {
       0,
     );
 
-    // Heading and paragraph run in parallel with icons
     tl.fromTo(
       heading,
-      { opacity: FRAME2_HEADING_INITIAL_OPACITY },
+      { opacity: t.FRAME2_HEADING_INITIAL_OPACITY },
       { opacity: 1, duration: 1, ease: "power2.out" },
       0.3,
     );
@@ -144,60 +105,78 @@ const Frame2 = () => {
   return (
     <section
       ref={sectionRef}
-      className="min-h-screen w-full bg-bg-warm"
       style={{
-        paddingTop: SECTION_PADDING_TOP_LG,
-        paddingBottom: SECTION_PADDING_BOTTOM_LG,
-        paddingLeft: sectionPaddingX,
-        paddingRight: sectionPaddingX,
+        minHeight: "100vh",
+        width: "100%",
+        backgroundColor: "#f5f3ef",
+        paddingTop: "var(--f2-section-pt)",
+        paddingBottom: "var(--f2-section-pb)",
+        paddingLeft: "var(--f2-section-px)",
+        paddingRight: "var(--f2-section-px)",
       }}
     >
       <div
-        className="items-center"
-        style={{ display: "flex", flexDirection: layoutDirection, gap: FRAME2_GAP }}
+        style={{
+          alignItems: "center",
+          display: "flex",
+          flexDirection: "var(--f2-layout-direction)" as React.CSSProperties["flexDirection"],
+          gap: "var(--f2-gap)",
+        }}
       >
         <div
-          className="min-w-0 flex flex-col"
-          style={{ flex: isMobile ? "none" : FRAME2_LEFT_FLEX }}
+          style={{
+            minWidth: 0,
+            display: "flex",
+            flexDirection: "column",
+            flex: "var(--f2-left-flex)",
+          }}
         >
           <h2
             ref={headingRef}
-            className="font-fanwood font-normal text-text-primary m-0"
             style={{
-              fontSize: h2Size,
-              lineHeight: LINE_HEIGHT_HEADING,
-              opacity: FRAME2_HEADING_INITIAL_OPACITY,
+              fontFamily: '"Fanwood Text", serif',
+              fontWeight: 400,
+              color: "#2d2d2d",
+              margin: 0,
+              fontSize: "var(--f2-h2-size)",
+              lineHeight: "var(--line-height-heading)",
+              opacity: t.FRAME2_HEADING_INITIAL_OPACITY,
             }}
           >
             What I do:
           </h2>
-          <div style={{ marginLeft: descMarginLeft }}>
+          <div style={{ marginLeft: "var(--f2-desc-ml)" }}>
             <p
               ref={paragraphRef}
-              className="font-fanwood font-normal text-text-primary mb-0"
               style={{
-                fontSize: bodySize,
-                lineHeight: LINE_HEIGHT_BODY,
-                maxWidth: isMobile ? "100%" : PARA_MAX_WIDTH,
-                marginTop: PARA_MARGIN_TOP_SM,
+                fontFamily: '"Fanwood Text", serif',
+                fontWeight: 400,
+                color: "#2d2d2d",
+                marginBottom: 0,
+                fontSize: "var(--f2-body-size)",
+                lineHeight: "var(--line-height-body)",
+                maxWidth: "var(--f2-para-max-width)",
+                marginTop: "var(--f2-para-mt)",
                 opacity: 0,
               }}
             >
               I specialize in creating &ldquo;
-              <span className="text-accent-green">agentic</span>&rdquo; workflows. That means your
+              <span style={{ color: "#7a8b5c" }}>agentic</span>&rdquo; workflows. That means your
               business doesn&rsquo;t just have tools; it has autonomous systems that handle lead
               gen, reporting, and customer care without you lifting a finger.
             </p>
           </div>
         </div>
         <div
-          className="min-w-0 justify-center justify-items-center"
           style={{
-            flex: isMobile ? "none" : FRAME2_RIGHT_FLEX,
+            minWidth: 0,
+            justifyContent: "center",
+            justifyItems: "center",
+            flex: "var(--f2-right-flex)",
             display: "grid",
-            gridTemplateColumns: iconColumns,
-            columnGap: iconColGap,
-            rowGap: GRID_GAP_Y,
+            gridTemplateColumns: "var(--f2-icon-columns)",
+            columnGap: "var(--f2-icon-col-gap)",
+            rowGap: "var(--f2-icon-row-gap)",
           }}
         >
           {icons.map((icon, i) => (
@@ -208,8 +187,13 @@ const Frame2 = () => {
               }}
               src={icon.src}
               alt={icon.alt}
-              style={{ width: "100%", maxWidth: iconSize, height: iconSize, opacity: 0 }}
-              className="object-contain"
+              style={{
+                width: "100%",
+                maxWidth: "var(--f2-icon-size)",
+                height: "var(--f2-icon-size)",
+                opacity: 0,
+                objectFit: "contain",
+              }}
             />
           ))}
         </div>

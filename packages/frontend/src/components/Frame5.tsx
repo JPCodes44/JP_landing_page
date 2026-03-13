@@ -1,39 +1,17 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef } from "react";
-import { useBreakpoint } from "../hooks/useBreakpoint";
-import {
-  FRAME5_CONTAINER_HEIGHT,
-  FRAME5_FROST_BLUR_FINAL,
-  FRAME5_HEADING_FINAL_SIZE,
-  FRAME5_HEADING_FINAL_TOP,
-  FRAME5_HEADING_INITIAL_OPACITY,
-  FRAME5_HEADING_INITIAL_SIZE,
-  FRAME5_HEADING_INITIAL_TOP,
-  FRAME5_RECT_BG_COLOR,
-  FRAME5_RECT_INITIAL_HEIGHT,
-  FRAME5_RECT_INITIAL_INSET,
-  FRAME5_RECT_INITIAL_TOP,
-} from "../theme";
+import * as t from "../theme";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Frame5 = () => {
-  const bp = useBreakpoint();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
   const headingLargeRef = useRef<HTMLHeadingElement>(null);
   const headingSmallRef = useRef<HTMLHeadingElement>(null);
   const frostRef = useRef<HTMLDivElement>(null);
   const rectRef = useRef<HTMLDivElement>(null);
-
-  const isMobile = bp === "mobile";
-  const headingInitialSize = isMobile
-    ? "6rem"
-    : `clamp(6rem, 16.25vw, ${FRAME5_HEADING_INITIAL_SIZE})`;
-  const headingFinalSize = isMobile ? "4rem" : `clamp(4rem, 10vw, ${FRAME5_HEADING_FINAL_SIZE})`;
-  const headingInitialTop = isMobile ? "30vh" : FRAME5_HEADING_INITIAL_TOP;
-  const headingLeft = isMobile ? "1.5rem" : "3.75rem";
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
@@ -51,7 +29,7 @@ const Frame5 = () => {
 
     if (prefersReducedMotion) {
       gsap.set(headingLarge, { opacity: 0 });
-      gsap.set(headingSmall, { opacity: 1, top: FRAME5_HEADING_FINAL_TOP });
+      gsap.set(headingSmall, { opacity: 1, top: t.FRAME5_HEADING_FINAL_TOP });
       gsap.set(rect, { opacity: 1 });
       if (nav) gsap.set(nav, { opacity: 0 });
       return;
@@ -66,21 +44,26 @@ const Frame5 = () => {
       },
     });
 
-    // Phase 1 (0–1.0): Large heading fades out; small heading fades in and moves up
     tl.to(headingLarge, { opacity: 0, ease: "none", duration: 1 }, 0);
     tl.fromTo(
       headingSmall,
-      { opacity: 0, top: FRAME5_HEADING_INITIAL_TOP },
-      { opacity: 1, top: FRAME5_HEADING_FINAL_TOP, ease: "none", duration: 1 },
+      { opacity: 0, top: t.FRAME5_HEADING_INITIAL_TOP },
+      { opacity: 1, top: t.FRAME5_HEADING_FINAL_TOP, ease: "none", duration: 1 },
       0,
     );
 
-    // Phase 2 (0.7–1.0): Rect fades in
+    const cs = getComputedStyle(rect);
     tl.fromTo(rect, { opacity: 0 }, { opacity: 1, ease: "none", duration: 0.3 }, 0.7);
 
-    // Phase 3 (1.2–2.0): Rect expands to fullscreen, nav collapses
-    tl.to(
+    tl.fromTo(
       rect,
+      {
+        top: cs.top,
+        left: cs.left,
+        right: cs.right,
+        height: cs.height,
+        borderRadius: cs.borderRadius,
+      },
       {
         top: 0,
         left: 0,
@@ -97,18 +80,15 @@ const Frame5 = () => {
       tl.to(nav, { opacity: 0, ease: "none", duration: 0.3 }, 1.2);
     }
 
-    // Phase 3 blur: background behind rect frosts as rect expands
     tl.fromTo(
       frost,
       { backdropFilter: "blur(0px)", opacity: 1 },
-      { backdropFilter: FRAME5_FROST_BLUR_FINAL, ease: "power2.in", duration: 0.8 },
+      { backdropFilter: t.FRAME5_FROST_BLUR_FINAL, ease: "power2.in", duration: 0.8 },
       1.2,
     );
 
-    // Linger: hold final frosted fullscreen state while user continues scrolling
     tl.to({}, { duration: 2 });
 
-    // Restore nav when viewport leaves Frame5, hide again if scrolling back in
     const navTrigger = nav
       ? ScrollTrigger.create({
           trigger: wrapper,
@@ -128,61 +108,107 @@ const Frame5 = () => {
   return (
     <section
       ref={wrapperRef}
-      className="relative w-full"
-      style={{ height: FRAME5_CONTAINER_HEIGHT }}
+      style={{
+        position: "relative",
+        width: "100%",
+        height: "var(--f5-container-height)",
+      }}
     >
-      <div ref={stickyRef} className="sticky top-0 h-screen w-full overflow-hidden bg-bg-warm">
-        {/* Large heading — 2 lines, fades out */}
+      <div
+        ref={stickyRef}
+        style={{
+          position: "sticky",
+          top: 0,
+          height: "100vh",
+          width: "100%",
+          overflow: "hidden",
+          backgroundColor: "#f5f3ef",
+        }}
+      >
         <h2
           ref={headingLargeRef}
-          className="absolute font-fanwood text-text-primary"
           style={{
-            fontSize: headingInitialSize,
-            opacity: FRAME5_HEADING_INITIAL_OPACITY,
-            top: headingInitialTop,
-            left: headingLeft,
+            position: "absolute",
+            fontFamily: '"Fanwood Text", serif',
+            color: "#2d2d2d",
+            fontSize: "var(--f5-heading-initial-size)",
+            opacity: t.FRAME5_HEADING_INITIAL_OPACITY,
+            top: "var(--f5-heading-initial-top)",
+            left: "var(--f5-heading-left)",
+            right: "var(--f5-heading-left)",
             margin: 0,
-            lineHeight: 1.1,
+            lineHeight: "var(--line-height-heading)",
+            wordWrap: "break-word",
+            overflowWrap: "break-word",
           }}
         >
           My Services In Action:
         </h2>
-        {/* Small heading — 1 line, fades in and moves up */}
         <h2
           ref={headingSmallRef}
-          className="absolute font-fanwood text-text-primary whitespace-nowrap"
           style={{
-            fontSize: headingFinalSize,
-            opacity: 0,
-            top: headingInitialTop,
-            left: headingLeft,
+            position: "absolute",
+            fontFamily: '"Fanwood Text", serif',
+            color: "#2d2d2d",
+            fontSize: "var(--f5-heading-final-size)",
+            opacity: t.FRAME5_HEADING_INITIAL_OPACITY,
+            top: "var(--f5-heading-initial-top)",
+            left: "var(--f5-heading-left)",
+            right: "var(--f5-heading-left)",
             margin: 0,
-            lineHeight: 1.1,
+            lineHeight: "var(--line-height-heading)",
+            wordWrap: "break-word",
+            overflowWrap: "break-word",
           }}
         >
           My Services In Action:
         </h2>
-        {/* Frost overlay — sits behind rect, blurs background content */}
         <div
           ref={frostRef}
-          className="absolute inset-0 pointer-events-none"
-          style={{ opacity: 0, backdropFilter: "blur(0px)" }}
+          style={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            pointerEvents: "none",
+            opacity: 0,
+            backdropFilter: "blur(0px)",
+          }}
         />
         <div
           ref={rectRef}
-          className="absolute rounded-2xl overflow-hidden"
           style={{
+            position: "absolute",
+            borderRadius: "1rem",
+            overflow: "hidden",
             opacity: 0,
-            top: FRAME5_RECT_INITIAL_TOP,
-            left: FRAME5_RECT_INITIAL_INSET,
-            right: FRAME5_RECT_INITIAL_INSET,
-            height: FRAME5_RECT_INITIAL_HEIGHT,
-            backgroundColor: FRAME5_RECT_BG_COLOR,
+            top: "var(--f5-rect-initial-top)",
+            left: "var(--f5-rect-initial-inset)",
+            right: "var(--f5-rect-initial-inset)",
+            height: "var(--f5-rect-initial-height)",
+            backgroundColor: "var(--f5-rect-bg)",
             border: "1px solid currentColor",
           }}
         >
-          <div className="flex items-center justify-center h-full font-fanwood text-text-primary">
-            <span className="font-fanwood text-text-primary">some video</span>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              height: "100%",
+              fontFamily: '"Fanwood Text", serif',
+              color: "#2d2d2d",
+            }}
+          >
+            <span
+              style={{
+                fontFamily: '"Fanwood Text", serif',
+                color: "#2d2d2d",
+              }}
+            >
+              some video
+            </span>
           </div>
         </div>
       </div>

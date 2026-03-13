@@ -5,51 +5,65 @@ import Frame3 from "./components/Frame3";
 import Frame4 from "./components/Frame4";
 import Frame5 from "./components/Frame5";
 import Frame6 from "./components/Frame6";
+import HamburgerMenu from "./components/HamburgerMenu";
 import { useBreakpoint } from "./hooks/useBreakpoint";
-import {
-  FONT_SIZE_LOGO,
-  FONT_SIZE_NAV_LINK,
-  NAVBAR_BACKDROP_BLUR,
-  NAVBAR_BACKDROP_SATURATE,
-  NAVBAR_BORDER,
-  NAVBAR_BOX_SHADOW,
-  NAVBAR_HEIGHT,
-  NAVBAR_PADDING_X,
-} from "./theme";
 
 const App = () => {
   const bp = useBreakpoint();
-  const navPaddingX = bp === "mobile" ? "1.5rem" : NAVBAR_PADDING_X;
-  const navLogoSize = bp === "mobile" ? "1.1rem" : FONT_SIZE_LOGO;
-  const navLinkSize = bp === "mobile" ? "1rem" : FONT_SIZE_NAV_LINK;
 
   return (
-    <div className="bg-bg-warm">
+    <div style={{ backgroundColor: "#f5f3ef" }}>
       <main>
         <nav
           id="main-nav"
-          className="sticky top-0 z-50 flex items-center justify-between"
           style={{
-            height: NAVBAR_HEIGHT,
-            paddingLeft: navPaddingX,
-            paddingRight: navPaddingX,
-            backdropFilter: `${NAVBAR_BACKDROP_BLUR} ${NAVBAR_BACKDROP_SATURATE}`,
-            WebkitBackdropFilter: `${NAVBAR_BACKDROP_BLUR} ${NAVBAR_BACKDROP_SATURATE}`,
+            position: "sticky",
+            top: 0,
+            zIndex: 50,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            height: "var(--nav-height)",
+            paddingLeft: "var(--nav-px)",
+            paddingRight: "var(--nav-px)",
+            backdropFilter: "var(--nav-backdrop)",
+            WebkitBackdropFilter: "var(--nav-backdrop)",
             background: "transparent",
-            boxShadow: NAVBAR_BOX_SHADOW,
-            borderBottom: NAVBAR_BORDER,
+            boxShadow: "var(--nav-box-shadow)",
+            borderBottom: "var(--nav-border)",
           }}
         >
-          <span className="font-fanwood text-text-primary" style={{ fontSize: navLogoSize }}>
+          <span
+            style={{
+              fontFamily: '"Fanwood Text", serif',
+              color: "#2d2d2d",
+              fontSize: "var(--nav-logo-size)",
+            }}
+          >
             Justin Mak.
           </span>
-          {bp !== "mobile" && (
-            <ul className="flex gap-10 list-none m-0 p-0">
+          {bp === "mobile" ? (
+            <HamburgerMenu />
+          ) : (
+            <ul
+              style={{
+                display: "flex",
+                gap: "2.5rem",
+                listStyle: "none",
+                margin: 0,
+                padding: 0,
+              }}
+            >
               <li>
                 <a
                   href="#services"
-                  className="font-fanwood font-normal text-text-primary no-underline hover:opacity-70"
-                  style={{ fontSize: navLinkSize }}
+                  style={{
+                    fontFamily: '"Fanwood Text", serif',
+                    fontWeight: 400,
+                    color: "#2d2d2d",
+                    textDecoration: "none",
+                    fontSize: "var(--nav-link-size)",
+                  }}
                 >
                   services
                 </a>
@@ -57,8 +71,13 @@ const App = () => {
               <li>
                 <a
                   href="#contact"
-                  className="font-fanwood font-normal text-text-primary no-underline hover:opacity-70"
-                  style={{ fontSize: navLinkSize }}
+                  style={{
+                    fontFamily: '"Fanwood Text", serif',
+                    fontWeight: 400,
+                    color: "#2d2d2d",
+                    textDecoration: "none",
+                    fontSize: "var(--nav-link-size)",
+                  }}
                 >
                   contact
                 </a>
@@ -66,8 +85,13 @@ const App = () => {
               <li>
                 <a
                   href="#experience"
-                  className="font-fanwood font-normal text-text-primary no-underline hover:opacity-70"
-                  style={{ fontSize: navLinkSize }}
+                  style={{
+                    fontFamily: '"Fanwood Text", serif',
+                    fontWeight: 400,
+                    color: "#2d2d2d",
+                    textDecoration: "none",
+                    fontSize: "var(--nav-link-size)",
+                  }}
                 >
                   experience
                 </a>
@@ -75,8 +99,13 @@ const App = () => {
               <li>
                 <a
                   href="#about"
-                  className="font-fanwood font-normal text-text-primary no-underline hover:opacity-70"
-                  style={{ fontSize: navLinkSize }}
+                  style={{
+                    fontFamily: '"Fanwood Text", serif',
+                    fontWeight: 400,
+                    color: "#2d2d2d",
+                    textDecoration: "none",
+                    fontSize: "var(--nav-link-size)",
+                  }}
                 >
                   about
                 </a>

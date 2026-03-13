@@ -1,44 +1,45 @@
-import { useBreakpoint } from "../hooks/useBreakpoint";
-import {
-  FONT_SIZE_BODY,
-  FONT_SIZE_HERO_H1,
-  HERO_MAX_WIDTH,
-  HERO_WIDTH,
-  LINE_HEIGHT_BODY,
-  LINE_HEIGHT_HEADING,
-  PARA_MARGIN_TOP,
-} from "../theme";
-
-// clamp(min, vw, max): scales proportionally with viewport between mobile and desktop
-// vw values derived from desktop size / 80rem * 100 (1280px = 80rem)
-const H1_SIZE = `clamp(2.8rem, 6.7vw, ${FONT_SIZE_HERO_H1})`;
-const BODY_SIZE = `clamp(1.4rem, 2.375vw, ${FONT_SIZE_BODY})`;
-
 const Frame1 = () => {
-  const bp = useBreakpoint();
-  const heroWidth = bp === "mobile" ? "90vw" : HERO_WIDTH;
-  const heroMaxWidth = bp === "mobile" ? "90vw" : HERO_MAX_WIDTH;
-
   return (
-    <section className="min-h-screen w-full bg-bg-warm flex items-center justify-center">
-      <div className="flex flex-col" style={{ width: heroWidth }}>
+    <section
+      style={{
+        minHeight: "100vh",
+        width: "100%",
+        backgroundColor: "#f5f3ef",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          width: "var(--f1-hero-width)",
+        }}
+      >
         <h1
-          className="font-fanwood font-normal text-text-primary m-0"
           style={{
-            fontSize: H1_SIZE,
-            lineHeight: LINE_HEIGHT_HEADING,
+            fontFamily: '"Fanwood Text", serif',
+            fontWeight: 400,
+            color: "#2d2d2d",
+            margin: 0,
+            fontSize: "var(--f1-h1-size)",
+            lineHeight: "var(--line-height-heading)",
           }}
         >
-          I build systems that <span className="text-accent-green">scale your business</span> while
+          I build systems that <span style={{ color: "#7a8b5c" }}>scale your business</span> while
           you sleep.
         </h1>
         <p
-          className="font-fanwood font-normal text-text-primary mb-0"
           style={{
-            fontSize: BODY_SIZE,
-            lineHeight: LINE_HEIGHT_BODY,
-            marginTop: PARA_MARGIN_TOP,
-            maxWidth: heroMaxWidth,
+            fontFamily: '"Fanwood Text", serif',
+            fontWeight: 400,
+            color: "#2d2d2d",
+            marginBottom: 0,
+            fontSize: "var(--f1-body-size)",
+            lineHeight: "var(--line-height-body)",
+            marginTop: "var(--f1-para-mt)",
+            maxWidth: "var(--f1-hero-max-width)",
           }}
         >
           Hi, I'm Justin. I transform manual bottlenecks into automated growth engines. No robotic
