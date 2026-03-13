@@ -21,8 +21,8 @@
   --nav-logo-size: 1.1rem;
   --nav-link-size: 1rem;
   --nav-backdrop: blur(8px) saturate(1.58);
-  --nav-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.06);
-  --nav-border: 1px solid rgba(0, 0, 0, 0.06);
+  --nav-box-shadow: 0 2px 2px rgb(0 0 0 / 6%);
+  --nav-border: 1px solid rgb(0 0 0 / 6%);
 
   /* ─── Frame1 — Hero ─── */
   --f1-hero-width: 90vw;
@@ -111,9 +111,9 @@
   --f6-label-size: 1.2rem;
   --f6-input-size: 1.1rem;
   --f6-input-padding: 0.75rem 1rem;
-  --f6-input-bg: #ffffff;
+  --f6-input-bg: #fff;
   --f6-textarea-height: 14rem;
-  --f6-shadow: 3px 3px 0px rgba(0, 0, 0, 0.15);
+  --f6-shadow: 3px 3px 0px rgb(0 0 0 / 15%);
   --f6-submit-size: 1.3rem;
   --f6-submit-padding: 0.6rem 2rem;
   --f6-submit-pt: 1.5rem;
@@ -129,7 +129,7 @@
   --footer-contact-gap: 0.75rem;
   --footer-stack-gap: 2rem;
   --footer-name-color: #1a1a1a;
-  --footer-name-font: Helvetica, Arial, sans-serif;
+  --footer-name-font: helvetica, arial, sans-serif;
   --footer-name-line-height: 0.85;
   --footer-name-mb: 0;
 
@@ -146,7 +146,7 @@
 }
 
 /* ─── Tablet: 640px+ ─── */
-@media (min-width: 640px) {
+@media (width >= 640px) {
   :root {
     /* Nav */
     --nav-px: 3.75rem;
@@ -208,7 +208,7 @@
     --f6-input-size: 1.25rem;
     --f6-input-padding: 0.85rem 1.1rem;
     --f6-textarea-height: 16rem;
-    --f6-shadow: 4px 4px 0px rgba(0, 0, 0, 0.15);
+    --f6-shadow: 4px 4px 0px rgb(0 0 0 / 15%);
     --f6-submit-size: 1.45rem;
     --f6-submit-padding: 0.7rem 2.5rem;
     --f6-submit-pt: 2rem;
@@ -226,7 +226,7 @@
 }
 
 /* ─── Desktop: 1024px+ ─── */
-@media (min-width: 1024px) {
+@media (width >= 1024px) {
   :root {
     /* Frame2 */
     --f2-h2-size: clamp(6rem, 17.5vw, 14rem);
@@ -264,14 +264,17 @@
 .footer-contacts {
   grid-template-columns: 1fr 1fr;
 }
+
 .footer-contacts > :nth-child(3) {
   justify-self: end;
 }
-@media (min-width: 640px) {
+
+@media (width >= 640px) {
   .footer-contacts {
     grid-template-columns: 1fr 1fr 1fr;
     justify-items: center;
   }
+
   .footer-contacts > :nth-child(3) {
     justify-self: auto;
   }
